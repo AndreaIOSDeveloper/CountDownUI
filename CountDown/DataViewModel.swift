@@ -17,24 +17,21 @@ struct CountDownObject: Identifiable, Equatable {
     
     var futureDate: Date
     
-    @State var countdown: DateComponents?
-    
-    // var countdown: DateComponents {
-    //     return Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: futureDate)
-    // }
-    
-    var timer: TimeCard? {
-         var timer = TimeCard(years: countdown?.year ?? 0,
-                              months: countdown?.month ?? 0,
-                              days: countdown?.day ?? 0,
-                              hours: countdown?.hour ?? 0,
-                              mins: countdown?.minute ?? 0,
-                              secs: countdown?.second ?? 0)
-         return timer
-     }
+    var countdown: DateComponents {
+        return Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: futureDate)
+    }
+
+    var timer: TimeCard {
+        return TimeCard(years: countdown.year ?? 0,
+                                months: countdown.month ?? 0,
+                                days: countdown.day ?? 0,
+                                hours: countdown.hour ?? 0,
+                                mins: countdown.minute ?? 0,
+                                secs: countdown.second ?? 0)
+   }
 
     var isFinished: Bool {
-        if timer?.days == 0, timer?.hours == 0, timer?.mins == 0, timer?.secs == 0 {
+        if timer.days == 0, timer.hours == 0, timer.mins == 0, timer.secs == 0 {
             return true
         } else {
             return false
@@ -64,19 +61,17 @@ class CountDownPublisher: ObservableObject {
 
 class DataViewModel: ObservableObject {
     @Published var listCountDownObject = CountDownPublisher()
+    @Published var updateUI = false //WORK AROUND FOR PUSH OF COMPUTER PROPERTY
     
     init() { }
 
     func updateTime() {
-         listCountDownObject.items.forEach {
-             $0.countdown = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: $0.futureDate)
-//             $0.timer = TimeCard(years: $0.countdown?.year ?? 0,
-//                                 months: $0.countdown?.month ?? 0,
-//                                 days: $0.countdown?.day ?? 0,
-//                                 hours: $0.countdown?.hour ?? 0,
-//                                 mins: $0.countdown?.minute ?? 0,
-//                                 secs: $0.countdown?.second ?? 0)
-         }        
+        updateUI = true
+        listCountDownObject.items.forEach { elem in
+            debugPrint("futureDate: \(elem.futureDate)")
+            debugPrint("countdown: \(elem.countdown)")
+            debugPrint("timer: \(elem.timer)")
+        }
     }
 }
 
