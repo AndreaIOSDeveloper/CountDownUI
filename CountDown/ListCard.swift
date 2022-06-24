@@ -29,7 +29,9 @@ struct ListCard: View {
                 Spacer(minLength: 40)
                 List ($viewModel.listCountDownObject.items) { $item in
                     CardTimer(object: item)
-                }.onReceive(timer) { time in
+                }
+                .buttonStyle(PlainButtonStyle()) // Remove cell style
+                .onReceive(timer) { time in
                     viewModel.updateTime()
                 }
             }

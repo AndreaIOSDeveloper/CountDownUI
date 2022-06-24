@@ -14,7 +14,7 @@ struct CountDownObject: Identifiable, Equatable {
     var subTitle: String
     var colorCard: Color
     var isConfirmed: Bool = false
-    
+    var isPrefered: Bool = false
     var futureDate: Date
     
     var countdown: DateComponents {

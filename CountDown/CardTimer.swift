@@ -31,7 +31,9 @@ struct CardTimer: View {
     private var subTitle: String?
     private var colorCard: Color = .red
     private var time: TimeCard = TimeCard(years: 0, months: 0, days: 0, hours: 0, mins: 0, secs: 0)
-    
+    @State private var isSelected: Bool = false
+    @State private var imageName: String = "star"
+
     init(object: CountDownObject) {
         self.title = object.title
         self.subTitle = object.subTitle
@@ -43,6 +45,13 @@ struct CardTimer: View {
         VStack {
             HStack {
                 Spacer()
+                Button(action: {
+                    self.isSelected.toggle()
+                    self.imageName = isSelected ? "star.fill" : "star"
+                }) {
+                    Image(systemName: imageName)
+                        .foregroundColor(.white)
+                }
             }
             Text(title ?? "Title")
                 .foregroundColor(Color.white)
