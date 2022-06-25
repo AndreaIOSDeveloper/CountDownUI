@@ -31,14 +31,19 @@ struct CardTimer: View {
     private var subTitle: String?
     private var colorCard: Color = .red
     private var time: TimeCard = TimeCard(years: 0, months: 0, days: 0, hours: 0, mins: 0, secs: 0)
-    @State private var isSelected: Bool = false
-    @State private var imageName: String = "star"
+    @State private var isSelected: Bool
+    @State private var imageName: String
+    
+    var starDidTap: () -> Void
 
-    init(object: CountDownObject) {
+    init(object: CountDownObject, starDidTap: @escaping () -> Void) {
         self.title = object.title
         self.subTitle = object.subTitle
         self.colorCard = object.colorCard
-        self.time = object.timer ?? TimeCard(years: 0, months: 0, days: 0, hours: 0, mins: 0, secs: 0)
+        self.time = object.timer
+        self.starDidTap = starDidTap
+        self.isSelected = object.isPrefered
+        self.imageName = object.isPrefered ? "star.fill" : "star"
     }
     
     var body: some View {
@@ -46,6 +51,7 @@ struct CardTimer: View {
             HStack {
                 Spacer()
                 Button(action: {
+                    self.starDidTap()
                     self.isSelected.toggle()
                     self.imageName = isSelected ? "star.fill" : "star"
                 }) {
@@ -105,6 +111,8 @@ struct CardTimer: View {
 
 struct CardTimer_Previews: PreviewProvider {
     static var previews: some View {
-        CardTimer(object: CountDownObject(id: "0", title: "Test", subTitle: "Test", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!) )
+        CardTimer(object: CountDownObject(id: "0", title: "Test", subTitle: "Test", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false), starDidTap: {
+            debugPrint("DidTap on")
+        } )
     }
 }

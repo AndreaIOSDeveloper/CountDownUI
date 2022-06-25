@@ -8,13 +8,13 @@
 import Foundation
 import SwiftUI
 
-struct CountDownObject: Identifiable, Equatable {
+struct CountDownObject: Identifiable, Equatable, Hashable {
     var id: String
     var title: String
     var subTitle: String
     var colorCard: Color
     var isConfirmed: Bool = false
-    var isPrefered: Bool = false
+    var isPrefered: Bool
     var futureDate: Date
     
     var countdown: DateComponents {
@@ -38,25 +38,31 @@ struct CountDownObject: Identifiable, Equatable {
         }
     }
     
-    init(id: String, title: String, subTitle: String, colorCard: Color, isConfirmed: Bool, futureDate: Date) {
+    init(id: String, title: String, subTitle: String, colorCard: Color, isConfirmed: Bool, futureDate: Date, isPrefered: Bool) {
         self.id = id
         self.title = title
         self.subTitle = subTitle
         self.colorCard = colorCard
         self.isConfirmed = isConfirmed
         self.futureDate = futureDate
+        self.isPrefered = isPrefered
     }
     
     public static func == (lhs: CountDownObject, rhs: CountDownObject) -> Bool {
         lhs.id == rhs.id
     }
+    
+    mutating func preferedDidTap() {
+        self.isPrefered.toggle()
+        debugPrint("IsPrefered: \(self.isPrefered)")
+    }
 }
 
 class CountDownPublisher: ObservableObject {
-    @Published var items: [CountDownObject] = [CountDownObject(id: "1", title: "STRANGE THINGS", subTitle: "SEASON 4 VOLUME 2 RELEASE DATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 30, hour: 0, minute: 0, second: 0))!),
-        CountDownObject(id: "2", title: "TRAVEL", subTitle: "GO TO IBIZA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 06, day: 29, hour: 18, minute: 0, second: 0))!),
-        CountDownObject(id: "3", title: "BETTER CALL SAUL", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard:  .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 27, hour: 0, minute: 0, second: 0))!),
-        CountDownObject(id: "4", title: "SQUID GAME", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!)]
+    @Published var items: [CountDownObject] = [CountDownObject(id: "1", title: "STRANGE THINGS", subTitle: "SEASON 4 VOLUME 2 RELEASE DATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 30, hour: 0, minute: 0, second: 0))!, isPrefered: false),
+                                               CountDownObject(id: "2", title: "TRAVEL", subTitle: "GO TO IBIZA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 06, day: 29, hour: 18, minute: 0, second: 0))!, isPrefered: true),
+                                               CountDownObject(id: "3", title: "BETTER CALL SAUL", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard:  .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false),
+                                               CountDownObject(id: "4", title: "SQUID GAME", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false)]
 }
 
 class DataViewModel: ObservableObject {
@@ -68,9 +74,9 @@ class DataViewModel: ObservableObject {
     func updateTime() {
         updateUI = true
         listCountDownObject.items.forEach { elem in
-            debugPrint("futureDate: \(elem.futureDate)")
-            debugPrint("countdown: \(elem.countdown)")
-            debugPrint("timer: \(elem.timer)")
+//            debugPrint("futureDate: \(elem.futureDate)")
+//            debugPrint("countdown: \(elem.countdown)")
+//            debugPrint("timer: \(elem.timer)")
         }
     }
 }

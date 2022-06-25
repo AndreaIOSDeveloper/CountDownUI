@@ -9,26 +9,37 @@ import Foundation
 import SwiftUI
 
 struct ListCard: View {
+    @State var items: [CountDownObject]
     @StateObject private var viewModel = DataViewModel()
-
+    @Binding private var viewModelBinding: DataViewModel
+    
     private var colorCard: Color = .red
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
-    init(colorCard: Color = .red) {
-        self.colorCard = colorCard
+    private var isPreferitiSection: Bool = false
+
+    init(data: Binding<DataViewModel>, model: DataViewModel, isPreferitiSection: Bool) {
+        self._viewModelBinding = data
+        self.isPreferitiSection = isPreferitiSection
         
-        // $viewModel.listCountDownObject.items.forEach { $item in
-        //     debugPrint($item)
-        //     item.colorCard = colorCard
-        // }
+        items = isPreferitiSection ? model.listCountDownObject.items.filter{$0.isPrefered == true} : model.listCountDownObject.items
     }
     
     var body: some View {
         NavigationView {
             VStack {
                 Spacer(minLength: 40)
-                List ($viewModel.listCountDownObject.items) { $item in
-                    CardTimer(object: item)
+                List(items) { item in
+                    CardTimer(object: item) {
+                        items.enumerated().forEach { index, itemSel in
+                            if itemSel == item {
+                                viewModel.listCountDownObject.items[index].preferedDidTap()
+                                debugPrint("DidTap on: \(item)")
+                                debugPrint("⚠️DidTap on: \(viewModel.listCountDownObject.items[index])")
+                            }
+                        }
+                        
+                        viewModel.listCountDownObject.items = items
+                    }
                 }
                 .buttonStyle(PlainButtonStyle()) // Remove cell style
                 .onReceive(timer) { time in
@@ -40,7 +51,7 @@ struct ListCard: View {
                 ToolbarItem(placement: .principal) {
                     VStack {
                         Text("COUNT DOWN APP").font(.headline)
-                        Text("WE FOUND \(viewModel.listCountDownObject.items.count) COUNTDOWNS").font(.subheadline)
+                        Text("WE FOUND \(items.count) COUNTDOWNS").font(.subheadline)
                     }
                 }
             }
@@ -50,6 +61,6 @@ struct ListCard: View {
 
 struct ListCard_Previews: PreviewProvider {
     static var previews: some View {
-        ListCard()
+        ListCard(data: .constant(DataViewModel()), model: DataViewModel(), isPreferitiSection: false)
     }
 }
