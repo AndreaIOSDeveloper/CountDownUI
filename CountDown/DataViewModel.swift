@@ -66,6 +66,8 @@ class CountDownPublisher: ObservableObject {
 }
 
 class DataViewModel: ObservableObject {
+    static let shared = DataViewModel()
+    
     @Published var listCountDownObject = CountDownPublisher()
     @Published var updateUI = false //WORK AROUND FOR PUSH OF COMPUTER PROPERTY
     
