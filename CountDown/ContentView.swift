@@ -14,6 +14,17 @@ struct ContentView: View {
 
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
+    init() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("✅ Permission ok for notification")
+            } else if let error = error {
+                print("❌ No Permission for notification")
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     var body: some View {
         TabView(selection: $tabSelection) {
             ListCard(isPreferitiSection: false)

@@ -12,7 +12,7 @@ struct CountDownObject: Identifiable, Equatable, Hashable {
     var id: String
     var title: String
     var subTitle: String
-    var colorCard: Color
+    var colorCard: String
     var isConfirmed: Bool = false
     var isPrefered: Bool
     var futureDate: Date
@@ -43,7 +43,54 @@ struct CountDownObject: Identifiable, Equatable, Hashable {
         }
     }
     
-    init(id: String, title: String, subTitle: String, colorCard: Color, isConfirmed: Bool, futureDate: Date, isPrefered: Bool, tags: [TAG], isCustom: Bool = false) {
+//    enum CodingKeys: String, CodingKey {
+//        case id = "id"
+//        case title = "title"
+//        case subTitle = "subTitle"
+//        case colorCard = "colorCard"
+//        case isConfirmed = "isConfirmed"
+//        case isPrefered = "isPrefered"
+//        case futureDate = "futureDate"
+//        case tags = "tags"
+//        case isCustom = "isCustom"
+//        case countdown = "countdown"
+//        case timer = "timer"
+//        case isFinished = "isFinished"
+//    }
+//
+//    func encode(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try container.encode(id, forKey: .id)
+//        try container.encode(title, forKey: .title)
+//        try container.encode(subTitle, forKey: .subTitle)
+//        try container.encode(colorCard, forKey: .colorCard)
+//        try container.encode(isConfirmed, forKey: .isConfirmed)
+//        try container.encode(isPrefered, forKey: .isPrefered)
+//        try container.encode(futureDate, forKey: .futureDate)
+//        try container.encode(tags, forKey: .tags)
+//        try container.encode(isCustom, forKey: .isCustom)
+//        try container.encode(countdown, forKey: .countdown)
+//        try container.encode(timer, forKey: .timer)
+//        try container.encode(isFinished, forKey: .isFinished)
+//    }
+//
+//       required init(from decoder: Decoder) throws {
+//           let container = try decoder.container(keyedBy: CodingKeys.self)
+//           id = try container.decode(String.self, forKey: .id)
+//           title = try container.decode(String.self, forKey: .title)
+//           subTitle = try container.decode(String.self, forKey: .subTitle)
+//           colorCard = try container.decode(String.self, forKey: .colorCard)
+//           isConfirmed = try container.decode(Bool.self, forKey: .isConfirmed)
+//           isPrefered = try container.decode(Bool.self, forKey: .isPrefered)
+//           futureDate = try container.decode(Date.self, forKey: .futureDate)
+//           tags = try container.decode([TAG].self, forKey: .tags)
+//           isCustom = try container.decode(Bool.self, forKey: .isCustom)
+//           countdown = try container.decode(DateComponents.self, forKey: .countdown)
+//           timer = try container.decode(TimeCard.self, forKey: .timer)
+//           isFinished = try container.decode(Bool.self, forKey: .isFinished)
+//       }
+
+    init(id: String, title: String, subTitle: String, colorCard: String, isConfirmed: Bool, futureDate: Date, isPrefered: Bool, tags: [TAG], isCustom: Bool = false) {
         self.id = id
         self.title = title
         self.subTitle = subTitle
@@ -66,13 +113,13 @@ struct CountDownObject: Identifiable, Equatable, Hashable {
 }
 
 class CountDownPublisher: ObservableObject {
-    @Published var items: [CountDownObject] = [CountDownObject(id: "0", title: "STRANGE THINGS", subTitle: "SEASON 4 VOLUME 1 RELEASE DATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 07, day: 01, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
-                                               CountDownObject(id: "1", title: "TRAVEL", subTitle: "GO TO IBIZA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 06, day: 29, hour: 18, minute: 0, second: 0))!, isPrefered: true, tags: [.travel]),
-                                               CountDownObject(id: "2", title: "ONE PUNCH MAN", subTitle: "SEASON 3 PREMIER DATA", colorCard:  .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 09, day: 13, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
-                                               CountDownObject(id: "3", title: "BETTER CALL SAUL", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard:  .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
-                                               CountDownObject(id: "4", title: "SQUID GAME", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
-                                               CountDownObject(id: "5", title: "NAPOLI VS GENOA", subTitle: "SERIE A 1a GIORNATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 08, day: 02, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.sport, .tv]),
-                                               CountDownObject(id: "6", title: "NEW YEARS DAY", subTitle: "COUNT DOWN TO THE YEAR 2023", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 12, day: 31, hour: 23, minute: 59, second: 59))!, isPrefered: false, tags: [.event, .other])]
+    @Published var items: [CountDownObject] = [CountDownObject(id: "0", title: "STRANGE THINGS", subTitle: "SEASON 4 VOLUME 1 RELEASE DATA", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 07, day: 01, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
+                                               CountDownObject(id: "1", title: "TRAVEL", subTitle: "GO TO IBIZA", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 06, day: 29, hour: 18, minute: 0, second: 0))!, isPrefered: true, tags: [.travel]),
+                                               CountDownObject(id: "2", title: "ONE PUNCH MAN", subTitle: "SEASON 3 PREMIER DATA", colorCard:  "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 09, day: 13, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
+                                               CountDownObject(id: "3", title: "BETTER CALL SAUL", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard:  "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
+                                               CountDownObject(id: "4", title: "SQUID GAME", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
+                                               CountDownObject(id: "5", title: "NAPOLI VS GENOA", subTitle: "SERIE A 1a GIORNATA", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 08, day: 02, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.sport, .tv]),
+                                               CountDownObject(id: "6", title: "NEW YEARS DAY", subTitle: "COUNT DOWN TO THE YEAR 2023", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 12, day: 31, hour: 23, minute: 59, second: 59))!, isPrefered: false, tags: [.event, .other])]
     @Published var customItems: [CountDownObject] = []
 }
 

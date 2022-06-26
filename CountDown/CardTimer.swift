@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct TimeCard {
+struct TimeCard: Codable {
     var years: Int
     var months: Int
     var days: Int
@@ -26,7 +26,7 @@ struct TimeCard {
     }
 }
 
-enum TAG {
+enum TAG: Codable {
     case tv
     case other
     case event
@@ -100,7 +100,7 @@ struct CardTimer: View {
     init(object: CountDownObject, idToPrefered: String, starDidTap: @escaping (String) -> Void) {
         self.title = object.title
         self.subTitle = object.subTitle
-        self.colorCard = object.colorCard
+        self.colorCard = .red
         self.time = object.timer
         self.isPrefered = object.isPrefered
         self.imageName = object.isPrefered ? "star.fill" : "star"
@@ -197,7 +197,7 @@ struct CardTimer_Previews: PreviewProvider {
         CardTimer(object: CountDownObject(id: "0",
                                           title: "Test",
                                           subTitle: "TestTestTestTestTestTestTestTest",
-                                          colorCard: .red,
+                                          colorCard: "red",
                                           isConfirmed: false,
                                           futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!,
                                           isPrefered: false,

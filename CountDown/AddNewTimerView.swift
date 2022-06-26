@@ -15,7 +15,7 @@ struct AddNewTimerView: View {
     @State var title: String = ""
     @State var description: String = ""
     @State private var previewIndex = ""
-    @State private var birthDate = Date()
+    @State private var customDataCountDown = Date()
     
     let previewOptions: [String] = [TAG.tv.title(), TAG.movies.title(), TAG.sport.title(), TAG.event.title(), TAG.game.title(), TAG.travel.title(), TAG.other.title()]
     let tomorrow = Date.now.addingTimeInterval(TimeInterval.infinity)
@@ -49,7 +49,7 @@ struct AddNewTimerView: View {
                 
                 Section(header: Text("Select Date:")) {
                     VStack {
-                        DatePicker(selection: $birthDate, in: ...tomorrow, displayedComponents: .date) {
+                        DatePicker(selection: $customDataCountDown, in: ...tomorrow, displayedComponents: [.date, .hourAndMinute]) {
                             Text("Select a date")
                         }
                         
@@ -64,10 +64,31 @@ struct AddNewTimerView: View {
                         Spacer()
                         
                         Button("Save") {
-                            let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: .blue, isConfirmed: false, futureDate: birthDate, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
-                            viewModel.listCountDownObject.customItems.append(newCountDown)
+                            let center = UNUserNotificationCenter.current()
+                            
+                            //Step-2 Create the notification content
+                            let content = UNMutableNotificationContent()
+                            content.title = "Notification for \(title)"
+                            content.body = "Your count down is finish !"
+                            content.sound = UNNotificationSound.default
+                            
+                            //Step-3 Create the notification trigger
+//                            let date = Date().addingTimeInterval(5)
+                            let dateComponent = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: customDataCountDown)
+                            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: false)
+                            
+                            //Step-4 Create a request
+                            let uuid = UUID().uuidString
+                            let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
+                            
+                            //Step-5 Register with Notification Center
+                            center.add(request) { error in
+                            }
+                            
+                            let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: "blue", isConfirmed: false, futureDate: customDataCountDown, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
+                                viewModel.listCountDownObject.customItems.append(newCountDown)
+                            }
                         }
-                    }
                 }
             }
         }
