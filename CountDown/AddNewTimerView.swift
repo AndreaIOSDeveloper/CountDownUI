@@ -64,8 +64,8 @@ struct AddNewTimerView: View {
                         Spacer()
                         
                         Button("Save") {
-                            let newCountDown = CountDownObject(id: "A1", title: title, subTitle: description, colorCard: .blue, isConfirmed: false, futureDate: birthDate, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
-                            viewModel.listCountDownObject.items.append(newCountDown)
+                            let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: .blue, isConfirmed: false, futureDate: birthDate, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
+                            viewModel.listCountDownObject.customItems.append(newCountDown)
                         }
                     }
                 }

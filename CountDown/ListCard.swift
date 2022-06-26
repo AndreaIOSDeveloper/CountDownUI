@@ -26,8 +26,21 @@ struct ListCard: View {
             VStack {
                 Spacer(minLength: 40)
                 if isPreferitiSection {
-                    List(viewModel.listCountDownObject.items.filter{$0.isPrefered == true}) { item in
-                        CardTimer(object: item, nElem: Int(item.id) ?? 0)
+                    let preferedList = viewModel.listCountDownObject.customItems + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
+                    List(preferedList) { item in
+                        CardTimer(object: item, idToPrefered: item.id) { findElem in
+                            viewModel.listCountDownObject.items.enumerated().forEach({ idx, item in
+                                if item.id == findElem {
+                                    viewModel.listCountDownObject.items[idx].isPrefered.toggle()
+                                }
+                            })
+                            //Controllo nei preferiti
+                            viewModel.listCountDownObject.customItems.enumerated().forEach({ idx, item in
+                                if item.id == findElem {
+                                    viewModel.listCountDownObject.customItems[idx].isPrefered.toggle()
+                                }
+                            })
+                        }
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
                     .onReceive(timer) { time in
@@ -35,7 +48,20 @@ struct ListCard: View {
                     }
                 } else {
                     List(viewModel.listCountDownObject.items.filter{$0.isCustom == false}) { item in
-                        CardTimer(object: item, nElem: Int(item.id) ?? 0)
+                        CardTimer(object: item, idToPrefered: item.id)  { findElem in
+                            viewModel.listCountDownObject.items.enumerated().forEach({ idx, item in
+                                if item.id == findElem {
+                                    viewModel.listCountDownObject.items[idx].isPrefered.toggle()
+                                }
+                            })
+                            //Controllo nei preferiti
+                            viewModel.listCountDownObject.customItems.enumerated().forEach({ idx, item in
+                                if item.id == findElem {
+                                    viewModel.listCountDownObject.customItems[idx].isPrefered.toggle()
+                                }
+                            })
+                        }
+
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
                     .onReceive(timer) { time in
@@ -49,7 +75,9 @@ struct ListCard: View {
                     
                     VStack {
                         Text("COUNT DOWN APP").font(.headline)
-                        Text("WE FOUND \(isPreferitiSection ? viewModel.listCountDownObject.items.filter{$0.isPrefered == true}.count : viewModel.listCountDownObject.items.count) COUNTDOWNS").font(.subheadline)
+                        let preferedList = viewModel.listCountDownObject.customItems + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
+                        
+                        Text("WE FOUND \(isPreferitiSection ? preferedList.count : viewModel.listCountDownObject.items.count) COUNTDOWNS").font(.subheadline)
                     }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
