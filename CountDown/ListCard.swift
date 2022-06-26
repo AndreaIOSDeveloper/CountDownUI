@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ListCard: View {
     @StateObject private var viewModel = DataViewModel.shared
+    @State var presentingModal = false
 
     private var colorCard: Color = .red
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -44,10 +45,21 @@ struct ListCard: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
+                    
                     VStack {
                         Text("COUNT DOWN APP").font(.headline)
                         Text("WE FOUND \(isPreferitiSection ? viewModel.listCountDownObject.items.filter{$0.isPrefered == true}.count : viewModel.listCountDownObject.items.count) COUNTDOWNS").font(.subheadline)
                     }
+                }
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                
+                    Button(action: {
+                        self.presentingModal = true
+                    }) {
+                        Image(systemName: "plus.circle")
+                                .foregroundColor(.black)
+                    }
+                    .sheet(isPresented: $presentingModal) { AddNewTimer(presentedAsModal: self.$presentingModal) }
                 }
             }
         }

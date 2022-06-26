@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F2C29842868632D0020494C /* AddNewTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C29832868632D0020494C /* AddNewTimer.swift */; };
+		3F2C2986286876D90020494C /* PreventableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C2985286876D90020494C /* PreventableScrollView.swift */; };
+		3F2C2988286877C20020494C /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C2987286877C20020494C /* TagView.swift */; };
 		741B0145285A1C560090B764 /* CountDownApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741B0144285A1C560090B764 /* CountDownApp.swift */; };
 		741B0147285A1C560090B764 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741B0146285A1C560090B764 /* ContentView.swift */; };
 		741B0149285A1C5B0090B764 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 741B0148285A1C5B0090B764 /* Assets.xcassets */; };
@@ -37,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F2C29832868632D0020494C /* AddNewTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTimer.swift; sourceTree = "<group>"; };
+		3F2C2985286876D90020494C /* PreventableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreventableScrollView.swift; sourceTree = "<group>"; };
+		3F2C2987286877C20020494C /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		741B0141285A1C560090B764 /* MyCountDown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCountDown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		741B0144285A1C560090B764 /* CountDownApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownApp.swift; sourceTree = "<group>"; };
 		741B0146285A1C560090B764 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -104,9 +110,12 @@
 				741B0146285A1C560090B764 /* ContentView.swift */,
 				741B0170285A67BB0090B764 /* ListCard.swift */,
 				741B016E285A4F960090B764 /* CardTimer.swift */,
+				3F2C29832868632D0020494C /* AddNewTimer.swift */,
+				3F2C2987286877C20020494C /* TagView.swift */,
 				741B0148285A1C5B0090B764 /* Assets.xcassets */,
 				741B014A285A1C5B0090B764 /* Preview Content */,
 				741B0172285A72000090B764 /* DataViewModel.swift */,
+				3F2C2985286876D90020494C /* PreventableScrollView.swift */,
 			);
 			path = CountDown;
 			sourceTree = "<group>";
@@ -268,9 +277,12 @@
 			files = (
 				741B0173285A72000090B764 /* DataViewModel.swift in Sources */,
 				741B0147285A1C560090B764 /* ContentView.swift in Sources */,
+				3F2C2986286876D90020494C /* PreventableScrollView.swift in Sources */,
 				741B0171285A67BB0090B764 /* ListCard.swift in Sources */,
 				741B0145285A1C560090B764 /* CountDownApp.swift in Sources */,
+				3F2C29842868632D0020494C /* AddNewTimer.swift in Sources */,
 				741B016F285A4F960090B764 /* CardTimer.swift in Sources */,
+				3F2C2988286877C20020494C /* TagView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

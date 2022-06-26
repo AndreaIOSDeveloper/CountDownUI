@@ -1,0 +1,30 @@
+//
+//  TagView.swift
+//  CountDown
+//
+//  Created by Di Francia, Andrea (Contractor) on 26/06/22.
+//
+
+import Foundation
+import SwiftUI
+
+struct TagView: View {
+    var title: String
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.white)
+                .frame(width: 50, height: 30)
+            Text(title)
+                .foregroundColor(.red)
+                .font(.system(size: 13))
+        }
+    }
+}
+
+struct TagView_Previews: PreviewProvider {
+    static var previews: some View {
+        TagView(title: "Prova")
+    }
+}

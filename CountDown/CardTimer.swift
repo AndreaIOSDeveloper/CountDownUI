@@ -26,13 +26,47 @@ struct TimeCard {
     }
 }
 
+enum TAG {
+    case tv
+    case other
+    case event
+    case movies
+    case sport
+    case game
+    case travel
+    
+    func title() -> String {
+        switch self {
+        case .tv:
+            return "TV"
+        case .other:
+            return "Other"
+        case .event:
+            return "Event"
+        case .movies:
+            return "Movies"
+        case .sport:
+            return "Sport"
+        case .game:
+            return "Game"
+        case .travel:
+            return "Travel"
+        }
+    }
+}
+
+extension TAG: Identifiable {
+    var id: Self { self }
+}
+
 struct CardTimer: View {
     private var title: String
     private var subTitle: String
     private var colorCard: Color = .red
     private var time: TimeCard = TimeCard(years: 0, months: 0, days: 0, hours: 0, mins: 0, secs: 0)
     private var nElem: Int
-    
+    private var tags: [TAG]
+
     @StateObject private var viewModel = DataViewModel.shared
     
     @State private var isSelected: Bool
@@ -46,6 +80,7 @@ struct CardTimer: View {
         self.isSelected = object.isPrefered
         self.imageName = object.isPrefered ? "star.fill" : "star"
         self.nElem = nElem
+        self.tags = object.tags
         
         if object.title == "STRANGE THINGS" {
             debugPrint(object.isPrefered)
@@ -58,6 +93,14 @@ struct CardTimer: View {
     var body: some View {
         VStack {
             HStack {
+                PreventableScrollView(canScroll: .constant(false)) {
+                    ForEach(0 ..< tags.count, id: \.self) { tag in
+                        TagView(title: tags[tag].title())
+                            .foregroundColor(.red)
+                            .font(.system(size: 13))
+                    }
+                }
+                
                 Spacer()
                 Button(action: {
                     viewModel.listCountDownObject.items[nElem].isPrefered.toggle()
@@ -126,7 +169,8 @@ struct CardTimer_Previews: PreviewProvider {
                                           colorCard: .red,
                                           isConfirmed: false,
                                           futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!,
-                                          isPrefered: false),
+                                          isPrefered: false,
+                                          tags: [.movies]),
                                           nElem: 1)
     }
 }
