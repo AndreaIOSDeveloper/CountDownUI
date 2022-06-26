@@ -59,10 +59,13 @@ struct CountDownObject: Identifiable, Equatable, Hashable {
 }
 
 class CountDownPublisher: ObservableObject {
-    @Published var items: [CountDownObject] = [CountDownObject(id: "1", title: "STRANGE THINGS", subTitle: "SEASON 4 VOLUME 2 RELEASE DATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 30, hour: 0, minute: 0, second: 0))!, isPrefered: false),
-                                               CountDownObject(id: "2", title: "TRAVEL", subTitle: "GO TO IBIZA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 06, day: 29, hour: 18, minute: 0, second: 0))!, isPrefered: true),
+    @Published var items: [CountDownObject] = [CountDownObject(id: "0", title: "STRANGE THINGS", subTitle: "SEASON 4 VOLUME 1 RELEASE DATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 07, day: 01, hour: 0, minute: 0, second: 0))!, isPrefered: false),
+                                               CountDownObject(id: "1", title: "TRAVEL", subTitle: "GO TO IBIZA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 06, day: 29, hour: 18, minute: 0, second: 0))!, isPrefered: true),
+                                               CountDownObject(id: "2", title: "ONE PUNCH MAN", subTitle: "SEASON 3 PREMIER DATA", colorCard:  .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 09, day: 13, hour: 0, minute: 0, second: 0))!, isPrefered: false),
                                                CountDownObject(id: "3", title: "BETTER CALL SAUL", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard:  .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false),
-                                               CountDownObject(id: "4", title: "SQUID GAME", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false)]
+                                               CountDownObject(id: "4", title: "SQUID GAME", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false),
+                                               CountDownObject(id: "5", title: "NAPOLI VS GENOA", subTitle: "SERIE A 1a GIORNATA", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 08, day: 02, hour: 0, minute: 0, second: 0))!, isPrefered: false),
+                                               CountDownObject(id: "6", title: "NEW YEARS DAY", subTitle: "COUNT DOWN TO THE YEAR 2023", colorCard: .red, isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 12, day: 31, hour: 23, minute: 59, second: 59))!, isPrefered: false)]
 }
 
 class DataViewModel: ObservableObject {
@@ -73,7 +76,7 @@ class DataViewModel: ObservableObject {
     
     init() { }
 
-    func updateTime() {
+    func updateList() {
         updateUI = true
         listCountDownObject.items.forEach { elem in
 //            debugPrint("futureDate: \(elem.futureDate)")

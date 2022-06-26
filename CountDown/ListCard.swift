@@ -16,7 +16,7 @@ struct ListCard: View {
     private var isPreferitiSection: Bool = false
     
     init(isPreferitiSection: Bool) {
-        self.isPreferitiSection = isPreferitiSection        
+        self.isPreferitiSection = isPreferitiSection
     }
     
     var body: some View {
@@ -25,33 +25,19 @@ struct ListCard: View {
                 Spacer(minLength: 40)
                 if isPreferitiSection {
                     List(viewModel.listCountDownObject.items.filter{$0.isPrefered == true}) { item in
-                        CardTimer(object: item) {
-                            viewModel.listCountDownObject.items.enumerated().forEach { index, itemSel in
-                                if itemSel == item {
-                                    viewModel.listCountDownObject.items[index].preferedDidTap()
-                                    debugPrint("⚠️DidTap on: \(viewModel.listCountDownObject.items[index])")
-                                }
-                            }
-                        }
+                        CardTimer(object: item, nElem: Int(item.id) ?? 0)
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
                     .onReceive(timer) { time in
-                        viewModel.updateTime()
+                        viewModel.updateList()
                     }
                 } else {
                     List(viewModel.listCountDownObject.items) { item in
-                        CardTimer(object: item) {
-                            viewModel.listCountDownObject.items.enumerated().forEach { index, itemSel in
-                                if itemSel == item {
-                                    viewModel.listCountDownObject.items[index].preferedDidTap()
-                                    debugPrint("⚠️DidTap on: \(viewModel.listCountDownObject.items[index])")
-                                }
-                            }
-                        }
+                        CardTimer(object: item, nElem: Int(item.id) ?? 0)
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
                     .onReceive(timer) { time in
-                        viewModel.updateTime()
+                        viewModel.updateList()
                     }
                 }
             }
@@ -60,7 +46,7 @@ struct ListCard: View {
                 ToolbarItem(placement: .principal) {
                     VStack {
                         Text("COUNT DOWN APP").font(.headline)
-                        Text("WE FOUND \(isPreferitiSection ? viewModel.listCountDownObject.items.count : viewModel.listCountDownObject.items.filter{$0.isPrefered == isPreferitiSection}.count) COUNTDOWNS").font(.subheadline)
+                        Text("WE FOUND \(isPreferitiSection ? viewModel.listCountDownObject.items.filter{$0.isPrefered == true}.count : viewModel.listCountDownObject.items.count) COUNTDOWNS").font(.subheadline)
                     }
                 }
             }
