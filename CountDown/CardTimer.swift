@@ -53,6 +53,27 @@ enum TAG {
             return "Travel"
         }
     }
+    
+    static func enumFromString(string: String) -> TAG {
+        switch string {
+        case self.tv.title():
+            return .tv
+        case self.other.title():
+            return .other
+        case self.event.title():
+            return .event
+        case self.movies.title():
+            return .movies
+        case self.sport.title():
+            return .sport
+        case self.game.title():
+            return .game
+        case self.travel.title():
+            return .travel
+        default:
+            return .other
+        }
+    }
 }
 
 extension TAG: Identifiable {
@@ -71,8 +92,10 @@ struct CardTimer: View {
     
     @State private var isSelected: Bool
     @State private var imageName: String
-
-    init(object: CountDownObject, nElem: Int) {
+    @State private var isCustom: Bool
+    @State private var isFinishTime: Bool
+    
+    init(object: CountDownObject, nElem: Int, isCustom: Bool = false) {
         self.title = object.title
         self.subTitle = object.subTitle
         self.colorCard = object.colorCard
@@ -81,6 +104,8 @@ struct CardTimer: View {
         self.imageName = object.isPrefered ? "star.fill" : "star"
         self.nElem = nElem
         self.tags = object.tags
+        self.isCustom = object.isCustom
+        self.isFinishTime = object.isFinished
         
         if object.title == "STRANGE THINGS" {
             debugPrint(object.isPrefered)
@@ -96,7 +121,7 @@ struct CardTimer: View {
                 PreventableScrollView(canScroll: .constant(false)) {
                     ForEach(0 ..< tags.count, id: \.self) { tag in
                         TagView(title: tags[tag].title())
-                            .foregroundColor(.red)
+                            .foregroundColor(isCustom ? .blue : .red)
                             .font(.system(size: 13))
                     }
                 }
@@ -120,39 +145,46 @@ struct CardTimer: View {
                 .padding(.bottom, 16.0)
                 .foregroundColor(Color.white)
             HStack {
-                VStack {
-                    Text(time.days.description)
+                if !isFinishTime {
+                    VStack {
+                        Text(time.days.description)
+                            .bold()
+                            .foregroundColor(Color.white)
+                        Text("Days")
+                            .foregroundColor(Color.white)
+                    }
+                    .padding(.trailing)
+                    
+                    VStack {
+                        Text(time.hours.description)
+                            .bold()
+                            .foregroundColor(Color.white)
+                        Text("Hours")
+                            .foregroundColor(Color.white)
+                    }
+                    .padding(.trailing)
+                    
+                    VStack {
+                        Text(time.mins.description)
+                            .bold()
+                            .foregroundColor(Color.white)
+                        Text("Mins")
+                            .foregroundColor(Color.white)
+                    }
+                    .padding(.trailing)
+                    
+                    VStack {
+                        Text(time.secs.description)
+                            .bold()
+                            .foregroundColor(Color.white)
+                        Text("Secs")
+                            .foregroundColor(Color.white)
+                    }
+                } else {
+                    Text("COUNT DOWN IS FINISH !")
+                        .foregroundColor(Color.white)
                         .bold()
-                        .foregroundColor(Color.white)
-                    Text("Days")
-                        .foregroundColor(Color.white)
-                }
-                .padding(.trailing)
-                
-                VStack {
-                    Text(time.hours.description)
-                        .bold()
-                        .foregroundColor(Color.white)
-                    Text("Hours")
-                        .foregroundColor(Color.white)
-                }
-                .padding(.trailing)
-                
-                VStack {
-                    Text(time.mins.description)
-                        .bold()
-                        .foregroundColor(Color.white)
-                    Text("Mins")
-                        .foregroundColor(Color.white)
-                }
-                .padding(.trailing)
-                
-                VStack {
-                    Text(time.secs.description)
-                        .bold()
-                        .foregroundColor(Color.white)
-                    Text("Secs")
-                        .foregroundColor(Color.white)
+                        .padding(.bottom, 4.0)
                 }
             }
         }

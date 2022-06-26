@@ -17,8 +17,12 @@ struct CountDownObject: Identifiable, Equatable, Hashable {
     var isPrefered: Bool
     var futureDate: Date
     var tags: [TAG]
+    var isCustom: Bool
     
     var countdown: DateComponents {
+        if futureDate < Date() {
+            return Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: Date())
+        }
         return Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: futureDate)
     }
 
@@ -32,14 +36,14 @@ struct CountDownObject: Identifiable, Equatable, Hashable {
    }
 
     var isFinished: Bool {
-        if timer.days == 0, timer.hours == 0, timer.mins == 0, timer.secs == 0 {
+        if timer.days == 0, timer.hours == 0, timer.mins == 0, timer.secs == 0 || futureDate < Date() {
             return true
         } else {
             return false
         }
     }
     
-    init(id: String, title: String, subTitle: String, colorCard: Color, isConfirmed: Bool, futureDate: Date, isPrefered: Bool, tags: [TAG]) {
+    init(id: String, title: String, subTitle: String, colorCard: Color, isConfirmed: Bool, futureDate: Date, isPrefered: Bool, tags: [TAG], isCustom: Bool = false) {
         self.id = id
         self.title = title
         self.subTitle = subTitle
@@ -48,6 +52,7 @@ struct CountDownObject: Identifiable, Equatable, Hashable {
         self.futureDate = futureDate
         self.isPrefered = isPrefered
         self.tags = tags
+        self.isCustom = isCustom
     }
     
     public static func == (lhs: CountDownObject, rhs: CountDownObject) -> Bool {

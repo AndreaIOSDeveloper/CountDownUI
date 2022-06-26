@@ -19,6 +19,7 @@ struct TagView: View {
             Text(title)
                 .foregroundColor(.red)
                 .font(.system(size: 13))
+                .bold()
         }
     }
 }

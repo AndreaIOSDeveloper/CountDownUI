@@ -11,6 +11,7 @@ import SwiftUI
 struct ListCard: View {
     @StateObject private var viewModel = DataViewModel.shared
     @State var presentingModal = false
+    @State var text = ""
 
     private var colorCard: Color = .red
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -33,7 +34,7 @@ struct ListCard: View {
                         viewModel.updateList()
                     }
                 } else {
-                    List(viewModel.listCountDownObject.items) { item in
+                    List(viewModel.listCountDownObject.items.filter{$0.isCustom == false}) { item in
                         CardTimer(object: item, nElem: Int(item.id) ?? 0)
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
@@ -52,14 +53,15 @@ struct ListCard: View {
                     }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                
-                    Button(action: {
-                        self.presentingModal = true
-                    }) {
-                        Image(systemName: "plus.circle")
+                    if isPreferitiSection {
+                        Button(action: {
+                            self.presentingModal = true
+                        }) {
+                            Image(systemName: "plus.circle")
                                 .foregroundColor(.black)
+                        }
+                        .sheet(isPresented: $presentingModal) { AddNewTimerView(presentedAsModal: self.$presentingModal) }
                     }
-                    .sheet(isPresented: $presentingModal) { AddNewTimer(presentedAsModal: self.$presentingModal) }
                 }
             }
         }
