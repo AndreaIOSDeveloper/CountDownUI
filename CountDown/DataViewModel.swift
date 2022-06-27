@@ -135,13 +135,19 @@ class DataViewModel: ObservableObject {
                 if listCountDownObject.items.contains(where: { $0.id == fullList[idx].id }) {
                     let index = listCountDownObject.items.firstIndex(of: fullList[idx])
                     listCountDownObject.items[index ?? 0].isFinished = true
+                    if id == listCountDownObject.items[index ?? 0].id {
+                        returnElem = true
+                    }
                     debugPrint("⚠️ LISTA NORMALE -> Ho Trovato un elemento finito \( listCountDownObject.items[index ?? 0]) al posto \(String(describing: index))")
                 } else {
                     let index = listCountDownObject.customItems.firstIndex(of: fullList[idx])
                     listCountDownObject.customItems[index ?? 0].isFinished = true
+                    if id == listCountDownObject.customItems[index ?? 0].id {
+                        returnElem = true
+                    }
                     debugPrint("⚠️ LISTA CUSTOM -> Ho Trovato un elemento finito \( listCountDownObject.customItems[index ?? 0]) al posto \(String(describing: index))")
                 }
-                returnElem = true
+                
             }
         }
         
