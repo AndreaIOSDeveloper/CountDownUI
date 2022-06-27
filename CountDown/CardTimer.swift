@@ -107,7 +107,7 @@ struct CardTimer: View {
         self.idToPrefered = idToPrefered
         self.tags = object.tags
         self.isCustom = object.isCustom
-        self.isFinishTime = object.isFinished
+        self.isFinishTime = object.data.isFinished
         
         self.starDidTap = starDidTap
     }

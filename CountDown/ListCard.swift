@@ -26,8 +26,7 @@ struct ListCard: View {
             VStack {
                 Spacer(minLength: 40)
                 if isPreferitiSection {
-                    let preferedList = viewModel.listCountDownObject.customItems + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
-                    List(preferedList) { item in
+                    List(viewModel.listCountDownObject.customItems + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}) { item in
                         CardTimer(object: item, idToPrefered: item.id) { findElem in
                             viewModel.listCountDownObject.items.enumerated().forEach({ idx, item in
                                 if item.id == findElem {
@@ -72,12 +71,11 @@ struct ListCard: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    
                     VStack {
-                        Text("COUNT DOWN APP").font(.headline)
+                        Text("My Count Down App").font(.headline)
                         let preferedList = viewModel.listCountDownObject.customItems + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
                         
-                        Text("WE FOUND \(isPreferitiSection ? preferedList.count : viewModel.listCountDownObject.items.count) COUNTDOWNS").font(.subheadline)
+                        Text("We found \(isPreferitiSection ? preferedList.count : viewModel.listCountDownObject.items.count) item").font(.subheadline)
                     }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -89,6 +87,14 @@ struct ListCard: View {
                                 .foregroundColor(.black)
                         }
                         .sheet(isPresented: $presentingModal) { AddNewTimerView(presentedAsModal: self.$presentingModal) }
+                    } else {
+                        Button(action: {
+                            self.presentingModal = true
+                        }) {
+                            Image(systemName: "flowchart")
+                                .foregroundColor(.black)
+                        }
+                        .sheet(isPresented: $presentingModal) { OrderListView(presentedAsModal: self.$presentingModal) }
                     }
                 }
             }

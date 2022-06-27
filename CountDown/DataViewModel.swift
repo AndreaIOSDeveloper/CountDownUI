@@ -8,7 +8,11 @@
 import Foundation
 import SwiftUI
 
-struct CountDownObject: Identifiable, Equatable, Hashable {
+class RefreshData: ObservableObject {
+    @Published var isFinished: Bool = false
+}
+
+struct CountDownObject: Identifiable, Equatable {
     var id: String
     var title: String
     var subTitle: String
@@ -35,13 +39,7 @@ struct CountDownObject: Identifiable, Equatable, Hashable {
                                 secs: countdown.second ?? 0)
    }
 
-    var isFinished: Bool {
-        if timer.days == 0, timer.hours == 0, timer.mins == 0, timer.secs == 0 || futureDate < Date() {
-            return true
-        } else {
-            return false
-        }
-    }
+   var data: RefreshData = RefreshData()
     
 //    enum CodingKeys: String, CodingKey {
 //        case id = "id"
@@ -105,11 +103,6 @@ struct CountDownObject: Identifiable, Equatable, Hashable {
     public static func == (lhs: CountDownObject, rhs: CountDownObject) -> Bool {
         lhs.id == rhs.id
     }
-    
-    mutating func preferedDidTap() {
-        self.isPrefered.toggle()
-        debugPrint("IsPrefered: \(self.isPrefered)")
-    }
 }
 
 class CountDownPublisher: ObservableObject {
@@ -127,16 +120,33 @@ class DataViewModel: ObservableObject {
     static let shared = DataViewModel()
     
     @Published var listCountDownObject = CountDownPublisher()
-    @Published var updateUI = false //WORK AROUND FOR PUSH OF COMPUTER PROPERTY
+    
+    //WORK AROUND FOR PUSH OF COMPUTER PROPERTY
+    @Published var updateUI = false
     
     init() { }
 
     func updateList() {
-        updateUI = true
-        listCountDownObject.items.forEach { elem in
-//            debugPrint("futureDate: \(elem.futureDate)")
-//            debugPrint("countdown: \(elem.countdown)")
-//            debugPrint("timer: \(elem.timer)")
+        updateUI.toggle()
+        
+        let fullList = listCountDownObject.items + listCountDownObject.customItems
+        fullList.enumerated().forEach { idx, elem in
+            if elem.timer.days == 0,
+               elem.timer.hours == 0,
+               elem.timer.mins == 0,
+               elem.timer.secs == 0 || elem.futureDate < Date() {
+                if listCountDownObject.items.contains(where: { $0.id == fullList[idx].id }) {
+                    let index = listCountDownObject.items.firstIndex(of: fullList[idx])
+                    listCountDownObject.items[index ?? 0].data.isFinished = true
+                    debugPrint("⚠️ LISTA NORMALE -> Ho Trovato un elemento finito \( listCountDownObject.items[index ?? 0]) al posto \(String(describing: index))")
+                } else {
+                    let index = listCountDownObject.customItems.firstIndex(of: fullList[idx])
+                    listCountDownObject.customItems[index ?? 0].data.isFinished = true
+                    debugPrint("⚠️ LISTA CUSTOM -> Ho Trovato un elemento finito \( listCountDownObject.customItems[index ?? 0]) al posto \(String(describing: index))")
+                }
+                
+                self.objectWillChange.send()
+            }
         }
     }
 }
