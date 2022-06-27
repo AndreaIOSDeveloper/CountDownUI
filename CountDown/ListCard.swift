@@ -29,11 +29,19 @@ struct ListCard: View {
                         CardTimer(object: item, idToPrefered: item.id)
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
+                    .onAppear(perform: {
+                        debugPrint("⚠️TAB PREFERITI")
+                        viewModel.objectWillChange.send()
+                    })
                 } else {
                     List(viewModel.listCountDownObject.items.filter{$0.isCustom == false}) { item in
                         CardTimer(object: item, idToPrefered: item.id)
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
+                    .onAppear(perform: {
+                        debugPrint("⚠️TAB HOME")
+                        viewModel.objectWillChange.send()
+                    })
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -42,7 +50,6 @@ struct ListCard: View {
                     VStack {
                         Text("My Count Down App").font(.headline)
                         let preferedList = viewModel.listCountDownObject.customItems + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
-                        
                         Text("We found \(isPreferitiSection ? preferedList.count : viewModel.listCountDownObject.items.count) item").font(.subheadline)
                     }
                 }
