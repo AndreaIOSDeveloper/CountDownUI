@@ -8,10 +8,6 @@
 import Foundation
 import SwiftUI
 
-class RefreshData: ObservableObject {
-    @Published var isFinished: Bool = false
-}
-
 struct CountDownObject: Identifiable, Equatable {
     var id: String
     var title: String
@@ -39,7 +35,7 @@ struct CountDownObject: Identifiable, Equatable {
                                 secs: countdown.second ?? 0)
    }
 
-   var data: RefreshData = RefreshData()
+   var isFinished: Bool = false
     
 //    enum CodingKeys: String, CodingKey {
 //        case id = "id"
@@ -126,8 +122,9 @@ class DataViewModel: ObservableObject {
     
     init() { }
 
-    func updateList() {
+    func checkFinishTimer(id: String) -> Bool {
         updateUI.toggle()
+        var returnElem: Bool = false
         
         let fullList = listCountDownObject.items + listCountDownObject.customItems
         fullList.enumerated().forEach { idx, elem in
@@ -137,18 +134,37 @@ class DataViewModel: ObservableObject {
                elem.timer.secs == 0 || elem.futureDate < Date() {
                 if listCountDownObject.items.contains(where: { $0.id == fullList[idx].id }) {
                     let index = listCountDownObject.items.firstIndex(of: fullList[idx])
-                    listCountDownObject.items[index ?? 0].data.isFinished = true
+                    listCountDownObject.items[index ?? 0].isFinished = true
                     debugPrint("⚠️ LISTA NORMALE -> Ho Trovato un elemento finito \( listCountDownObject.items[index ?? 0]) al posto \(String(describing: index))")
                 } else {
                     let index = listCountDownObject.customItems.firstIndex(of: fullList[idx])
-                    listCountDownObject.customItems[index ?? 0].data.isFinished = true
+                    listCountDownObject.customItems[index ?? 0].isFinished = true
                     debugPrint("⚠️ LISTA CUSTOM -> Ho Trovato un elemento finito \( listCountDownObject.customItems[index ?? 0]) al posto \(String(describing: index))")
                 }
-                
-                self.objectWillChange.send()
+                returnElem = true
             }
         }
+        
+        return returnElem
+    }
+    
+    func checkPrefered(findElem: String) -> Bool {
+        updateUI.toggle()
+        
+        var returnElem: Bool = false
+        
+        listCountDownObject.items.enumerated().forEach({ idx, item in
+            if item.id == findElem {
+                returnElem = listCountDownObject.items[idx].isPrefered
+            }
+        })
+        //Controllo nei preferiti
+        listCountDownObject.customItems.enumerated().forEach({ idx, item in
+            if item.id == findElem {
+                returnElem =  listCountDownObject.items[idx].isPrefered
+            }
+        })
+        
+        return returnElem
     }
 }
-
-

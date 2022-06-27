@@ -20,6 +20,7 @@ struct OrderListView: View {
     }
     
     var body: some View {
+        Spacer()
         Section(header: Text("Order list in base of tag")) {
             
             List(array) { item in

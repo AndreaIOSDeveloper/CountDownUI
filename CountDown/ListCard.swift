@@ -14,7 +14,6 @@ struct ListCard: View {
     @State var text = ""
 
     private var colorCard: Color = .red
-    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     private var isPreferitiSection: Bool = false
     
     init(isPreferitiSection: Bool) {
@@ -27,45 +26,14 @@ struct ListCard: View {
                 Spacer(minLength: 40)
                 if isPreferitiSection {
                     List(viewModel.listCountDownObject.customItems + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}) { item in
-                        CardTimer(object: item, idToPrefered: item.id) { findElem in
-                            viewModel.listCountDownObject.items.enumerated().forEach({ idx, item in
-                                if item.id == findElem {
-                                    viewModel.listCountDownObject.items[idx].isPrefered.toggle()
-                                }
-                            })
-                            //Controllo nei preferiti
-                            viewModel.listCountDownObject.customItems.enumerated().forEach({ idx, item in
-                                if item.id == findElem {
-                                    viewModel.listCountDownObject.customItems[idx].isPrefered.toggle()
-                                }
-                            })
-                        }
+                        CardTimer(object: item, idToPrefered: item.id)
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
-                    .onReceive(timer) { time in
-                        viewModel.updateList()
-                    }
                 } else {
                     List(viewModel.listCountDownObject.items.filter{$0.isCustom == false}) { item in
-                        CardTimer(object: item, idToPrefered: item.id)  { findElem in
-                            viewModel.listCountDownObject.items.enumerated().forEach({ idx, item in
-                                if item.id == findElem {
-                                    viewModel.listCountDownObject.items[idx].isPrefered.toggle()
-                                }
-                            })
-                            //Controllo nei preferiti
-                            viewModel.listCountDownObject.customItems.enumerated().forEach({ idx, item in
-                                if item.id == findElem {
-                                    viewModel.listCountDownObject.customItems[idx].isPrefered.toggle()
-                                }
-                            })
-                        }
-
+                        CardTimer(object: item, idToPrefered: item.id)
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
-                    .onReceive(timer) { time in
-                        viewModel.updateList()
-                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)

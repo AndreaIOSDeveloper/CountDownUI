@@ -87,8 +87,6 @@ struct CardTimer: View {
     private var time: TimeCard = TimeCard(years: 0, months: 0, days: 0, hours: 0, mins: 0, secs: 0)
     private var idToPrefered: String
     private var tags: [TAG]
-
-    var starDidTap: (String) -> Void
     
     @StateObject private var viewModel = DataViewModel.shared
     
@@ -97,7 +95,9 @@ struct CardTimer: View {
     @State private var isCustom: Bool
     @State private var isFinishTime: Bool
     
-    init(object: CountDownObject, idToPrefered: String, starDidTap: @escaping (String) -> Void) {
+    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
+    init(object: CountDownObject, idToPrefered: String) {
         self.title = object.title
         self.subTitle = object.subTitle
         self.colorCard = .red
@@ -107,9 +107,7 @@ struct CardTimer: View {
         self.idToPrefered = idToPrefered
         self.tags = object.tags
         self.isCustom = object.isCustom
-        self.isFinishTime = object.data.isFinished
-        
-        self.starDidTap = starDidTap
+        self.isFinishTime = object.isFinished
     }
     
     var body: some View {
@@ -125,11 +123,28 @@ struct CardTimer: View {
                 
                 Spacer()
                 Button(action: {
-                    self.starDidTap(idToPrefered)
-                    debugPrint("DidTap on \(title) with id: \(idToPrefered)")
+                    debugPrint("⚠️ DidTap on \(title) with id: \(idToPrefered)")
+
+                    viewModel.listCountDownObject.items.enumerated().forEach({ idx, item in
+                        if item.id == idToPrefered {
+                            debugPrint("🥵 Ho tappato un elemento STANDARD: \(viewModel.listCountDownObject.items[idx].title) è un preferito' \(viewModel.listCountDownObject.items[idx].isPrefered)")
+                            viewModel.listCountDownObject.items[idx].isPrefered.toggle()
+                            isPrefered = viewModel.listCountDownObject.items[idx].isPrefered
+                            debugPrint("🥵 Ho tappato un elemento STANDARD: \(viewModel.listCountDownObject.items[idx].title) è diventato' \(viewModel.listCountDownObject.items[idx].isPrefered)")
+                        }
+                    })
+                    //Controllo nei preferiti
+                    viewModel.listCountDownObject.customItems.enumerated().forEach({ idx, item in
+                        if item.id == idToPrefered {
+                            debugPrint("🥵 Ho tappato un elemento CUSTOM: \(viewModel.listCountDownObject.customItems[idx].title) è un preferito' \(viewModel.listCountDownObject.customItems[idx].isPrefered)")
+                            viewModel.listCountDownObject.customItems[idx].isPrefered.toggle()
+                            isPrefered = viewModel.listCountDownObject.customItems[idx].isPrefered
+                            debugPrint("🥵 Ho tappato un elemento CUSTOM: \(viewModel.listCountDownObject.customItems[idx].title) è diventato' \(viewModel.listCountDownObject.customItems[idx].isPrefered)")
+
+                        }
+                    })
                     
-                    self.isPrefered.toggle()
-                    self.imageName = isPrefered ? "star.fill" : "star"
+                    imageName = isPrefered ? "star.fill" : "star"
                 }) {
                     Image(systemName: imageName)
                         .foregroundColor(.white)
@@ -186,6 +201,11 @@ struct CardTimer: View {
                         .padding(.bottom, 4.0)
                 }
             }
+            .onReceive(timer) { time in
+                isFinishTime = viewModel.checkFinishTimer(id: idToPrefered)
+                isPrefered = viewModel.checkPrefered(findElem: idToPrefered)
+                imageName = isPrefered ? "star.fill" : "star"
+            }
         }
         .padding()
         .background(colorCard)
@@ -202,7 +222,6 @@ struct CardTimer_Previews: PreviewProvider {
                                           futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!,
                                           isPrefered: false,
                                           tags: [.movies]),
-                                          idToPrefered: "1",
-                                          starDidTap: { id in debugPrint("DidTap on \(id)")})
+                                          idToPrefered: "1")
     }
 }
