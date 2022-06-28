@@ -17,6 +17,7 @@ enum TypeSection {
 struct ListCard: View {
     @StateObject private var viewModel = DataViewModel.shared
     @State var presentingModal = false
+    @State var nActiveFiltri: Int = 0
     @State var text = ""
 
     private var colorCard: Color = .red
@@ -70,7 +71,7 @@ struct ListCard: View {
                         }
                         .buttonStyle(PlainButtonStyle()) // Remove cell style
                         .onAppear(perform: {
-                            debugPrint("⚠️TAB COmpletati")
+                            debugPrint("⚠️TAB Completati")
                         })
                     }
                 }
@@ -94,6 +95,7 @@ struct ListCard: View {
                         }
                     }
                 }
+                
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     switch typeSection {
                     case .home:
@@ -103,7 +105,8 @@ struct ListCard: View {
                             Image(systemName: "flowchart")
                                 .foregroundColor(.black)
                         }
-                        .sheet(isPresented: $presentingModal) { OrderListView(presentedAsModal: self.$presentingModal) }
+                        .sheet(isPresented: $presentingModal) { OrderListView(presentedAsModal: self.$presentingModal, nActiveFiltri: self.$nActiveFiltri) }
+                        .overlay(Badge(count: nActiveFiltri))
                     case .preferiti:
                         Button(action: {
                             self.presentingModal = true

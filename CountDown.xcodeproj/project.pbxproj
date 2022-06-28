@@ -12,6 +12,7 @@
 		3F2C2988286877C20020494C /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C2987286877C20020494C /* TagView.swift */; };
 		3F2C298A2868BF590020494C /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C29892868BF590020494C /* UserDefaults+.swift */; };
 		3F2C298C2869C32A0020494C /* OrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C298B2869C32A0020494C /* OrderListView.swift */; };
+		3F2C298E286AFCB60020494C /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C298D286AFCB60020494C /* BadgeView.swift */; };
 		741B0145285A1C560090B764 /* CountDownApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741B0144285A1C560090B764 /* CountDownApp.swift */; };
 		741B0147285A1C560090B764 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741B0146285A1C560090B764 /* ContentView.swift */; };
 		741B0149285A1C5B0090B764 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 741B0148285A1C5B0090B764 /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 		3F2C2987286877C20020494C /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		3F2C29892868BF590020494C /* UserDefaults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+.swift"; sourceTree = "<group>"; };
 		3F2C298B2869C32A0020494C /* OrderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListView.swift; sourceTree = "<group>"; };
+		3F2C298D286AFCB60020494C /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		741B0141285A1C560090B764 /* MyCountDown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCountDown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		741B0144285A1C560090B764 /* CountDownApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownApp.swift; sourceTree = "<group>"; };
 		741B0146285A1C560090B764 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				3F2C29832868632D0020494C /* AddNewTimerView.swift */,
 				3F2C2987286877C20020494C /* TagView.swift */,
 				3F2C298B2869C32A0020494C /* OrderListView.swift */,
+				3F2C298D286AFCB60020494C /* BadgeView.swift */,
 				741B0148285A1C5B0090B764 /* Assets.xcassets */,
 				741B014A285A1C5B0090B764 /* Preview Content */,
 				741B0172285A72000090B764 /* DataViewModel.swift */,
@@ -281,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F2C298E286AFCB60020494C /* BadgeView.swift in Sources */,
 				741B0173285A72000090B764 /* DataViewModel.swift in Sources */,
 				3F2C298A2868BF590020494C /* UserDefaults+.swift in Sources */,
 				741B0147285A1C560090B764 /* ContentView.swift in Sources */,

@@ -120,6 +120,15 @@ class DataViewModel: ObservableObject {
     //WORK AROUND FOR PUSH OF COMPUTER PROPERTY
     @Published var updateUI = false
     
+    @Published var arraytag: [OrderListType] = [OrderListType(tag: "All", isCheck: true),
+                                     OrderListType(tag: TAG.other.title(), isCheck: false),
+                                     OrderListType(tag: TAG.tv.title(), isCheck: false),
+                                     OrderListType(tag: TAG.travel.title(), isCheck: false),
+                                     OrderListType(tag: TAG.game.title(), isCheck: false),
+                                     OrderListType(tag: TAG.event.title(), isCheck: false),
+                                     OrderListType(tag: TAG.movies.title(), isCheck: false),
+                                     OrderListType(tag: TAG.sport.title(), isCheck: false)]
+    
     init() { }
 
     func checkFinishTimer(id: String) -> Bool {
