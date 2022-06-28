@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct CountDownApp: App {
+    @StateObject private var viewModel = DataViewModel.shared
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear() {
+                    viewModel.receiceCountDown()
+                }
         }
     }
 }

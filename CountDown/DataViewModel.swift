@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct CountDownObject: Identifiable, Equatable {
+struct CountDownObject: Identifiable, Equatable, Codable {
     var id: String
     var title: String
     var subTitle: String
@@ -37,53 +37,53 @@ struct CountDownObject: Identifiable, Equatable {
 
    var isFinished: Bool = false
     
-//    enum CodingKeys: String, CodingKey {
-//        case id = "id"
-//        case title = "title"
-//        case subTitle = "subTitle"
-//        case colorCard = "colorCard"
-//        case isConfirmed = "isConfirmed"
-//        case isPrefered = "isPrefered"
-//        case futureDate = "futureDate"
-//        case tags = "tags"
-//        case isCustom = "isCustom"
-//        case countdown = "countdown"
-//        case timer = "timer"
-//        case isFinished = "isFinished"
-//    }
-//
-//    func encode(to encoder: Encoder) throws {
-//        var container = encoder.container(keyedBy: CodingKeys.self)
-//        try container.encode(id, forKey: .id)
-//        try container.encode(title, forKey: .title)
-//        try container.encode(subTitle, forKey: .subTitle)
-//        try container.encode(colorCard, forKey: .colorCard)
-//        try container.encode(isConfirmed, forKey: .isConfirmed)
-//        try container.encode(isPrefered, forKey: .isPrefered)
-//        try container.encode(futureDate, forKey: .futureDate)
-//        try container.encode(tags, forKey: .tags)
-//        try container.encode(isCustom, forKey: .isCustom)
-//        try container.encode(countdown, forKey: .countdown)
-//        try container.encode(timer, forKey: .timer)
-//        try container.encode(isFinished, forKey: .isFinished)
-//    }
-//
-//       required init(from decoder: Decoder) throws {
-//           let container = try decoder.container(keyedBy: CodingKeys.self)
-//           id = try container.decode(String.self, forKey: .id)
-//           title = try container.decode(String.self, forKey: .title)
-//           subTitle = try container.decode(String.self, forKey: .subTitle)
-//           colorCard = try container.decode(String.self, forKey: .colorCard)
-//           isConfirmed = try container.decode(Bool.self, forKey: .isConfirmed)
-//           isPrefered = try container.decode(Bool.self, forKey: .isPrefered)
-//           futureDate = try container.decode(Date.self, forKey: .futureDate)
-//           tags = try container.decode([TAG].self, forKey: .tags)
-//           isCustom = try container.decode(Bool.self, forKey: .isCustom)
-//           countdown = try container.decode(DateComponents.self, forKey: .countdown)
-//           timer = try container.decode(TimeCard.self, forKey: .timer)
-//           isFinished = try container.decode(Bool.self, forKey: .isFinished)
-//       }
-
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case title = "title"
+        case subTitle = "subTitle"
+        case colorCard = "colorCard"
+        case isConfirmed = "isConfirmed"
+        case isPrefered = "isPrefered"
+        case futureDate = "futureDate"
+        case tags = "tags"
+        case isCustom = "isCustom"
+        case countdown = "countdown"
+        case timer = "timer"
+        case isFinished = "isFinished"
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(title, forKey: .title)
+        try container.encode(subTitle, forKey: .subTitle)
+        try container.encode(colorCard, forKey: .colorCard)
+        try container.encode(isConfirmed, forKey: .isConfirmed)
+        try container.encode(isPrefered, forKey: .isPrefered)
+        try container.encode(futureDate, forKey: .futureDate)
+        try container.encode(tags, forKey: .tags)
+        try container.encode(isCustom, forKey: .isCustom)
+        try container.encode(countdown, forKey: .countdown)
+        try container.encode(timer, forKey: .timer)
+        try container.encode(isFinished, forKey: .isFinished)
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        title = try container.decode(String.self, forKey: .title)
+        subTitle = try container.decode(String.self, forKey: .subTitle)
+        colorCard = try container.decode(String.self, forKey: .colorCard)
+        isConfirmed = try container.decode(Bool.self, forKey: .isConfirmed)
+        isPrefered = try container.decode(Bool.self, forKey: .isPrefered)
+        futureDate = try container.decode(Date.self, forKey: .futureDate)
+        tags = try container.decode([TAG].self, forKey: .tags)
+        isCustom = try container.decode(Bool.self, forKey: .isCustom)
+        try container.decode(DateComponents.self, forKey: .countdown)
+        try container.decode(TimeCard.self, forKey: .timer)
+        isFinished = try container.decode(Bool.self, forKey: .isFinished)
+    }
+    
     init(id: String, title: String, subTitle: String, colorCard: String, isConfirmed: Bool, futureDate: Date, isPrefered: Bool, tags: [TAG], isCustom: Bool = false) {
         self.id = id
         self.title = title
@@ -167,7 +167,7 @@ class DataViewModel: ObservableObject {
         
         var returnElem: Bool = false
         
-        if listCountDownObject.items.contains{ $0.id == findElem } {
+        if listCountDownObject.items.contains(where: { $0.id == findElem }) {
             listCountDownObject.items.enumerated().forEach({ idx, item in
                 if item.id == findElem {
                     returnElem = item.isPrefered
@@ -185,5 +185,36 @@ class DataViewModel: ObservableObject {
         }
         
         return returnElem
+    }
+    
+    func encodeObject() {
+        let jsonEncoder = JSONEncoder()
+        do {
+            let jsonData = try jsonEncoder.encode(listCountDownObject.items)
+            let jsonString = String(data: jsonData, encoding: .utf8)!
+            print(jsonString)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func saveCountDown(item: [CountDownObject]) {
+        let userDefaults = UserDefaults.standard
+        do {
+            try userDefaults.setObject(item, forKey: "MyPersonalCountDown")
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func receiceCountDown() {
+        let userDefaults = UserDefaults.standard
+        do {
+            let myPersonalCountDown = try userDefaults.getObject(forKey: "MyPersonalCountDown", castTo: [CountDownObject].self)
+            listCountDownObject.customItems = myPersonalCountDown
+            print(myPersonalCountDown)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }

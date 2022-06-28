@@ -52,19 +52,28 @@ struct ListCard: View {
                 Spacer(minLength: 20)
                 switch typeSection {
                 case .home:
-                    List(filterHomeList()) { item in
-                        CardTimer(object: item, idToPrefered: item.id)
+                    if filterHomeList().isEmpty {
+                            Text(String(format: "Non ci sono count down con i filtri selezionati"))
+                                .font(.headline)
+                                .padding()
+                                .multilineTextAlignment(.center)
+                            Spacer()
+                    } else {
+                        List(filterHomeList()) { item in
+                            CardTimer(object: item, idToPrefered: item.id)
+                        }
+                        .buttonStyle(PlainButtonStyle()) // Remove cell style
+                        .onAppear(perform: {
+                            debugPrint("⚠️TAB PREFERITI")
+                        })
                     }
-                    .buttonStyle(PlainButtonStyle()) // Remove cell style
-                    .onAppear(perform: {
-                        debugPrint("⚠️TAB PREFERITI")
-                    })
                 case .preferiti:
                     let listPreferiti = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == true} + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
                     if listPreferiti.isEmpty {
                             Text(String(format: "Non hai count down preferiti"))
                                 .font(.headline)
                                 .padding()
+                                .multilineTextAlignment(.center)
                             Spacer()
                     } else {
                         List(listPreferiti) { item in
@@ -81,6 +90,7 @@ struct ListCard: View {
                             Text(String(format: "Non hai count down completati"))
                                 .font(.headline)
                                 .padding()
+                                .multilineTextAlignment(.center)
                             Spacer()
                     } else {
                         List(listCompletati) { item in
@@ -88,7 +98,7 @@ struct ListCard: View {
                         }
                         .buttonStyle(PlainButtonStyle()) // Remove cell style
                         .onAppear(perform: {
-                            debugPrint("⚠️TAB Completati")
+                            debugPrint("⚠️TAB COMPLETATI")
                         })
                     }
                 }

@@ -87,6 +87,7 @@ struct AddNewTimerView: View {
                             
                             let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: "blue", isConfirmed: false, futureDate: customDataCountDown, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
                                 viewModel.listCountDownObject.customItems.append(newCountDown)
+                                viewModel.saveCountDown(item: viewModel.listCountDownObject.customItems)
                             }
                         }
                 }

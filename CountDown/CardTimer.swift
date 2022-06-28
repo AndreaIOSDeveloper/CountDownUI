@@ -24,6 +24,15 @@ struct TimeCard: Codable {
         self.mins = mins
         self.secs = secs
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case years = "years"
+        case months = "months"
+        case days = "days"
+        case hours = "hours"
+        case mins = "mins"
+        case secs = "secs"
+    }
 }
 
 enum TAG: Codable {
