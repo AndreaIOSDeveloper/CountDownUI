@@ -59,11 +59,17 @@ struct AddNewTimerView: View {
                 
                 Section(header: Text("Warning: some field are mandatory")) {
                     HStack{
-                        Button("Cancel") { self.presentedAsModal = false }
+                        LargeButton(title: "Annulla",
+                                    backgroundColor: .white,
+                                    foregroundColor: .black) {
+                            self.presentedAsModal = false
+                        }
                         
                         Spacer()
                         
-                        Button("Save") {
+                        LargeButton(title: "Save",
+                                    backgroundColor: .black) {
+                                            
                             let center = UNUserNotificationCenter.current()
                             
                             //Step-2 Create the notification content
@@ -73,7 +79,7 @@ struct AddNewTimerView: View {
                             content.sound = UNNotificationSound.default
                             
                             //Step-3 Create the notification trigger
-//                            let date = Date().addingTimeInterval(5)
+                            //                            let date = Date().addingTimeInterval(5)
                             let dateComponent = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: customDataCountDown)
                             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: false)
                             
@@ -86,10 +92,10 @@ struct AddNewTimerView: View {
                             }
                             
                             let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: "blue", isConfirmed: false, futureDate: customDataCountDown, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
-                                viewModel.listCountDownObject.customItems.append(newCountDown)
-                                viewModel.saveCountDown(item: viewModel.listCountDownObject.customItems)
-                            }
+                            viewModel.listCountDownObject.customItems.append(newCountDown)
+                            viewModel.saveCountDown(item: viewModel.listCountDownObject.customItems)
                         }
+                    }
                 }
             }
         }

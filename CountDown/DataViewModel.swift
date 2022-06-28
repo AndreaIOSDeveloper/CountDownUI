@@ -137,16 +137,20 @@ class DataViewModel: ObservableObject {
     init() {
         receiceCountDown()
         
-        checkUserNameAvailable()
-            .removeDuplicates()
-            .sink { [weak self] jsonItem in
-                guard let self = self else { return }
-                
-                jsonItem.isEmpty ? print("❌ JSON VUOTO !") : print("✅ Lista JSON: \(jsonItem)")
-                
-                self.listCountDownObject.items = jsonItem
-            }
-            .store(in: &subscriptions)
+        subscribe()
+    }
+    
+    private func subscribe() {
+        DispatchQueue.main.async {
+            self.checkUserNameAvailable()
+                .removeDuplicates()
+                .sink { [weak self] jsonItem in
+                    guard let self = self else { return }
+                    jsonItem.isEmpty ? print("❌ JSON VUOTO !") : print("✅ Lista JSON: \(jsonItem)")
+                    self.listCountDownObject.items = jsonItem
+                }
+                .store(in: &self.subscriptions)
+        }
     }
 
     func checkFinishTimer(id: String) -> Bool {
@@ -205,7 +209,7 @@ class DataViewModel: ObservableObject {
         return returnElem
     }
     
-    func encodeObject() {
+    private func encodeObject() {
         let jsonEncoder = JSONEncoder()
         do {
             let jsonData = try jsonEncoder.encode(listCountDownObject.items)
@@ -237,7 +241,7 @@ class DataViewModel: ObservableObject {
     }
     
     //Ricevo il JSON dall'APP
-    func receiveJSON(callback: ([CountDownObject])->()) {
+    private func receiveJSON(callback: ([CountDownObject])->()) {
         let url = Bundle.main.url(forResource: "CountDownData", withExtension: "json")!
         let data = try! Data(contentsOf: url)
         let decoder = JSONDecoder()
@@ -254,7 +258,7 @@ class DataViewModel: ObservableObject {
     
 // "http://napolirace.altervista.org/CountDownData.json"
     
-    func checkUserNameAvailable() -> AnyPublisher<[CountDownObject], Never> {
+    private func checkUserNameAvailable() -> AnyPublisher<[CountDownObject], Never> {
         guard let url = URL(string: "http://napolirace.altervista.org/CountDownData.json") else {
             return Just([]).eraseToAnyPublisher()
         }

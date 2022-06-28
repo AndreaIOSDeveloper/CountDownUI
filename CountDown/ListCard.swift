@@ -129,7 +129,7 @@ struct ListCard: View {
                             self.presentingModal = true
                         }) {
                             Image(systemName: "flowchart")
-                                .foregroundColor(.black)
+                                .foregroundColor(.primary)
                         }
                         .sheet(isPresented: $presentingModal) { OrderListView(presentedAsModal: self.$presentingModal, nActiveFiltri: self.$nActiveFiltri) }
                         .overlay(Badge(count: nActiveFiltri))
@@ -138,7 +138,7 @@ struct ListCard: View {
                             self.presentingModal = true
                         }) {
                             Image(systemName: "plus.circle")
-                                .foregroundColor(.black)
+                                .foregroundColor(.primary)
                         }
                         .sheet(isPresented: $presentingModal) { AddNewTimerView(presentedAsModal: self.$presentingModal) }
                     case .completati:

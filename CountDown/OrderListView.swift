@@ -63,10 +63,9 @@ struct OrderListView: View {
                 }
             }
             
-            Button {
+            LargeButton(title: "Save",
+                        backgroundColor: .black) {
                 self.presentedAsModal = false
-            } label: {
-                Text("SAVE")
             }
             Spacer()
         }

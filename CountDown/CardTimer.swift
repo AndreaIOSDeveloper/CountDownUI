@@ -171,6 +171,7 @@ struct CardTimer: View {
                     Image(systemName: imageName)
                         .foregroundColor(.white)
                 }
+                .frame(width: 50, height: 50, alignment: .center)
             }
             Text(title)
                 .foregroundColor(Color.white)
