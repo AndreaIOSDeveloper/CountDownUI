@@ -29,7 +29,7 @@ struct ListCard: View {
     var body: some View {
         NavigationView {
             VStack {
-                Spacer(minLength: 40)
+                Spacer(minLength: 20)
                 switch typeSection {
                 case .home:
                     let listHome = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == false && $0.isFinished == false} +
@@ -43,21 +43,36 @@ struct ListCard: View {
                     })
                 case .preferiti:
                     let listPreferiti = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == true} + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
-                    List(listPreferiti) { item in
-                        CardTimer(object: item, idToPrefered: item.id)
+                    if listPreferiti.isEmpty {
+                            Text(String(format: "Non hai count down preferiti"))
+                                .font(.headline)
+                                .padding()
+                            Spacer()
+                    } else {
+                        List(listPreferiti) { item in
+                            CardTimer(object: item, idToPrefered: item.id)
+                        }
+                        .buttonStyle(PlainButtonStyle()) // Remove cell style
+                        .onAppear(perform: {
+                            debugPrint("⚠️TAB HOME")
+                        })
                     }
-                    .buttonStyle(PlainButtonStyle()) // Remove cell style
-                    .onAppear(perform: {
-                        debugPrint("⚠️TAB HOME")
-                    })
                 case .completati:
-                    List(viewModel.listCountDownObject.customItems.filter{$0.isFinished == true} + viewModel.listCountDownObject.items.filter{$0.isFinished == true}) { item in
-                        CardTimer(object: item, idToPrefered: item.id)
+                    let listCompletati = viewModel.listCountDownObject.customItems.filter{$0.isFinished == true} + viewModel.listCountDownObject.items.filter{$0.isFinished == true}
+                    if listCompletati.isEmpty {
+                            Text(String(format: "Non hai count down completati"))
+                                .font(.headline)
+                                .padding()
+                            Spacer()
+                    } else {
+                        List(listCompletati) { item in
+                            CardTimer(object: item, idToPrefered: item.id)
+                        }
+                        .buttonStyle(PlainButtonStyle()) // Remove cell style
+                        .onAppear(perform: {
+                            debugPrint("⚠️TAB COmpletati")
+                        })
                     }
-                    .buttonStyle(PlainButtonStyle()) // Remove cell style
-                    .onAppear(perform: {
-                        debugPrint("⚠️TAB COmpletati")
-                    })
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
