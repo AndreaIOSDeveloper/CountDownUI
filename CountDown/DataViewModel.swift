@@ -147,14 +147,14 @@ class DataViewModel: ObservableObject {
                     if id == listCountDownObject.items[index ?? 0].id {
                         returnElem = true
                     }
-                    debugPrint("⚠️ LISTA NORMALE -> Ho Trovato un elemento finito \( listCountDownObject.items[index ?? 0]) al posto \(String(describing: index))")
+//                    debugPrint("⚠️ LISTA NORMALE -> Ho Trovato un elemento finito \( listCountDownObject.items[index ?? 0]) al posto \(String(describing: index))")
                 } else {
                     let index = listCountDownObject.customItems.firstIndex(of: fullList[idx])
                     listCountDownObject.customItems[index ?? 0].isFinished = true
                     if id == listCountDownObject.customItems[index ?? 0].id {
                         returnElem = true
                     }
-                    debugPrint("⚠️ LISTA CUSTOM -> Ho Trovato un elemento finito \( listCountDownObject.customItems[index ?? 0]) al posto \(String(describing: index))")
+//                    debugPrint("⚠️ LISTA CUSTOM -> Ho Trovato un elemento finito \( listCountDownObject.customItems[index ?? 0]) al posto \(String(describing: index))")
                 }
             }
         }
@@ -171,7 +171,7 @@ class DataViewModel: ObservableObject {
             listCountDownObject.items.enumerated().forEach({ idx, item in
                 if item.id == findElem {
                     returnElem = item.isPrefered
-                    debugPrint("🥳 Lista Normale \(item.title) è un preferito -> \(item.isPrefered)")
+//                    debugPrint("🥳 Lista Normale \(item.title) è un preferito -> \(item.isPrefered)")
                 }
             })
         } else {
@@ -179,7 +179,7 @@ class DataViewModel: ObservableObject {
             listCountDownObject.customItems.enumerated().forEach({ idx, item in
                 if item.id == findElem {
                     returnElem =  item.isPrefered
-                    debugPrint("🥳 Lista Preferiti \(item.title) è un preferito -> \(item.isPrefered)")
+//                    debugPrint("🥳 Lista Preferiti \(item.title) è un preferito -> \(item.isPrefered)")
                 }
             })
         }
@@ -212,9 +212,9 @@ class DataViewModel: ObservableObject {
         do {
             let myPersonalCountDown = try userDefaults.getObject(forKey: "MyPersonalCountDown", castTo: [CountDownObject].self)
             listCountDownObject.customItems = myPersonalCountDown
-            print(myPersonalCountDown)
+            print("🟢 SCARICO I COUNTDOWN PERSONALI \(myPersonalCountDown)")
         } catch {
-            print(error.localizedDescription)
+            print("🟠 ERRORE COUNTDOWN PERSONALI \(error.localizedDescription)")
         }
     }
 }
