@@ -25,6 +25,36 @@ struct AddNewTimerView: View {
   
     }
     
+    private func createNotification() {
+        let center = UNUserNotificationCenter.current()
+        
+        //Step-2 Create the notification content
+        let content = UNMutableNotificationContent()
+        content.title = "Notification for \(title)"
+        content.body = "Your count down is finish !"
+        content.sound = UNNotificationSound.default
+        
+        //Step-3 Create the notification trigger
+        // let date = Date().addingTimeInterval(5)
+        let dateComponent = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: customDataCountDown)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: false)
+        
+        //Step-4 Create a request
+        let uuid = UUID().uuidString
+        let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
+        
+        //Step-5 Register with Notification Center
+        center.add(request) { error in
+            if error != nil {
+                debugPrint("❌ Error create notification \(error!)")
+            }
+        }
+        
+        let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: "blue", isConfirmed: false, futureDate: customDataCountDown, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
+        viewModel.listCountDownObject.customItems.append(newCountDown)
+        viewModel.saveCountDown(item: viewModel.listCountDownObject.customItems)
+    }
+    
     var body: some View {
         NavigationView {
             Form {
@@ -59,7 +89,7 @@ struct AddNewTimerView: View {
                 
                 Section(header: Text("Warning: some field are mandatory")) {
                     HStack{
-                        LargeButton(title: "Annulla",
+                        LargeButton(title: "Cancel",
                                     backgroundColor: .white,
                                     foregroundColor: .black) {
                             self.presentedAsModal = false
@@ -69,38 +99,13 @@ struct AddNewTimerView: View {
                         
                         LargeButton(title: "Save",
                                     backgroundColor: .black) {
-                                            
-                            let center = UNUserNotificationCenter.current()
-                            
-                            //Step-2 Create the notification content
-                            let content = UNMutableNotificationContent()
-                            content.title = "Notification for \(title)"
-                            content.body = "Your count down is finish !"
-                            content.sound = UNNotificationSound.default
-                            
-                            //Step-3 Create the notification trigger
-                            //                            let date = Date().addingTimeInterval(5)
-                            let dateComponent = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: customDataCountDown)
-                            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: false)
-                            
-                            //Step-4 Create a request
-                            let uuid = UUID().uuidString
-                            let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
-                            
-                            //Step-5 Register with Notification Center
-                            center.add(request) { error in
-                            }
-                            
-                            let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: "blue", isConfirmed: false, futureDate: customDataCountDown, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
-                            viewModel.listCountDownObject.customItems.append(newCountDown)
-                            viewModel.saveCountDown(item: viewModel.listCountDownObject.customItems)
+                            self.presentedAsModal = false
+                            createNotification()
                         }
                     }
                 }
             }
         }
-        
-        
     }
 }
 

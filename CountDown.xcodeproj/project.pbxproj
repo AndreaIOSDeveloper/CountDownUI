@@ -127,12 +127,12 @@
 				3F2C2987286877C20020494C /* TagView.swift */,
 				3F2C298B2869C32A0020494C /* OrderListView.swift */,
 				3F2C298D286AFCB60020494C /* BadgeView.swift */,
+				3F2C2992286BAD040020494C /* LargeButtonView.swift */,
 				741B0148285A1C5B0090B764 /* Assets.xcassets */,
 				741B014A285A1C5B0090B764 /* Preview Content */,
 				741B0172285A72000090B764 /* DataViewModel.swift */,
 				3F2C2985286876D90020494C /* PreventableScrollView.swift */,
 				3F2C29892868BF590020494C /* UserDefaults+.swift */,
-				3F2C2992286BAD040020494C /* LargeButtonView.swift */,
 			);
 			path = CountDown;
 			sourceTree = "<group>";
