@@ -147,7 +147,6 @@ class DataViewModel: ObservableObject {
                     }
                     debugPrint("⚠️ LISTA CUSTOM -> Ho Trovato un elemento finito \( listCountDownObject.customItems[index ?? 0]) al posto \(String(describing: index))")
                 }
-                
             }
         }
         
@@ -159,17 +158,22 @@ class DataViewModel: ObservableObject {
         
         var returnElem: Bool = false
         
-        listCountDownObject.items.enumerated().forEach({ idx, item in
-            if item.id == findElem {
-                returnElem = listCountDownObject.items[idx].isPrefered
-            }
-        })
-        //Controllo nei preferiti
-        listCountDownObject.customItems.enumerated().forEach({ idx, item in
-            if item.id == findElem {
-                returnElem =  listCountDownObject.items[idx].isPrefered
-            }
-        })
+        if listCountDownObject.items.contains{ $0.id == findElem } {
+            listCountDownObject.items.enumerated().forEach({ idx, item in
+                if item.id == findElem {
+                    returnElem = item.isPrefered
+                    debugPrint("🥳 Lista Normale \(item.title) è un preferito -> \(item.isPrefered)")
+                }
+            })
+        } else {
+            //Controllo nei preferiti
+            listCountDownObject.customItems.enumerated().forEach({ idx, item in
+                if item.id == findElem {
+                    returnElem =  item.isPrefered
+                    debugPrint("🥳 Lista Preferiti \(item.title) è un preferito -> \(item.isPrefered)")
+                }
+            })
+        }
         
         return returnElem
     }

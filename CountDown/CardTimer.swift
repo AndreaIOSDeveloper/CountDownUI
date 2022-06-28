@@ -87,11 +87,13 @@ struct CardTimer: View {
     private var time: TimeCard = TimeCard(years: 0, months: 0, days: 0, hours: 0, mins: 0, secs: 0)
     private var idToPrefered: String
     private var tags: [TAG]
+    private var imageName: String {
+        return isPrefered ? "star.fill" : "star"
+    }
     
     @StateObject private var viewModel = DataViewModel.shared
     
     @State private var isPrefered: Bool
-    @State private var imageName: String
     @State private var isCustom: Bool
     @State private var isFinishTime: Bool
     
@@ -103,7 +105,6 @@ struct CardTimer: View {
         self.colorCard = .red
         self.time = object.timer
         self.isPrefered = object.isPrefered
-        self.imageName = object.isPrefered ? "star.fill" : "star"
         self.idToPrefered = idToPrefered
         self.tags = object.tags
         self.isCustom = object.isCustom
@@ -113,29 +114,19 @@ struct CardTimer: View {
     func didTapPrefered() {
         viewModel.listCountDownObject.items.enumerated().forEach({ idx, item in
             if item.id == idToPrefered {
-                DispatchQueue.main.async {
                     debugPrint("🥵 Ho tappato un elemento STANDARD: \(viewModel.listCountDownObject.items[idx].title) è un preferito: \(viewModel.listCountDownObject.items[idx].isPrefered)")
-                    
                     viewModel.listCountDownObject.items[idx].isPrefered = !viewModel.listCountDownObject.items[idx].isPrefered
                     isPrefered = viewModel.listCountDownObject.items[idx].isPrefered
-                    imageName = isPrefered ? "star.fill" : "star"
-                    
                     debugPrint("🥵 Ho tappato un elemento STANDARD: \(viewModel.listCountDownObject.items[idx].title) è diventato: \(viewModel.listCountDownObject.items[idx].isPrefered)")
-                }
             }
         })
         
         viewModel.listCountDownObject.customItems.enumerated().forEach({ idx, item in
             if item.id == idToPrefered {
-                DispatchQueue.main.async {
                     debugPrint("🥵 Ho tappato un elemento CUSTOM: \(viewModel.listCountDownObject.customItems[idx].title) è un preferito: \(viewModel.listCountDownObject.customItems[idx].isPrefered)")
-                    
                     viewModel.listCountDownObject.customItems[idx].isPrefered = !viewModel.listCountDownObject.customItems[idx].isPrefered
                     isPrefered = viewModel.listCountDownObject.customItems[idx].isPrefered
-                    imageName = isPrefered ? "star.fill" : "star"
-                    
                     debugPrint("🥵 Ho tappato un elemento CUSTOM: \(viewModel.listCountDownObject.customItems[idx].title) è diventato: \(viewModel.listCountDownObject.customItems[idx].isPrefered)")
-                }
             }
         })
     }
@@ -153,8 +144,10 @@ struct CardTimer: View {
                 
                 Spacer()
                 Button(action: {
-                    debugPrint("⚠️ DidTap on \(title) with id: \(idToPrefered)")
-                    didTapPrefered()
+                    DispatchQueue.main.async {
+                        debugPrint("⚠️ DidTap on \(title) with id: \(idToPrefered)")
+                        didTapPrefered()
+                    }
                 }) {
                     Image(systemName: imageName)
                         .foregroundColor(.white)
@@ -215,7 +208,6 @@ struct CardTimer: View {
                 DispatchQueue.main.async {
                     isFinishTime = viewModel.checkFinishTimer(id: idToPrefered)
                     isPrefered = viewModel.checkPrefered(findElem: idToPrefered)
-                    imageName = isPrefered ? "star.fill" : "star"
                 }
             }
         }

@@ -27,17 +27,23 @@ struct ContentView: View {
     
     var body: some View {
         TabView(selection: $tabSelection) {
-            ListCard(isPreferitiSection: false)
+            ListCard(typeSection: .home)
                 .tabItem {
                     tabSelection == 0 ? Label("Home", systemImage: "house.fill").environment(\.symbolVariants, .none) : Label("Home", systemImage: "house").environment(\.symbolVariants, .none)
                 }
                 .tag(0)
 
-            ListCard(isPreferitiSection: true)
+            ListCard(typeSection: .preferiti)
                 .tabItem {
                     tabSelection == 1 ? Label("Preferiti", systemImage: "bookmark.fill").environment(\.symbolVariants, .none) : Label("Preferiti", systemImage: "bookmark").environment(\.symbolVariants, .none)
                 }
                 .tag(1)
+            
+            ListCard(typeSection: .completati)
+                .tabItem {
+                    tabSelection == 2 ? Label("Completati", systemImage: "hourglass.bottomhalf.fill").environment(\.symbolVariants, .none) : Label("Completati", systemImage: "hourglass").environment(\.symbolVariants, .none)
+                }
+                .tag(2)
         }
     }
 }

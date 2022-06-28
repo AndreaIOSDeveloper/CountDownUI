@@ -8,39 +8,55 @@
 import Foundation
 import SwiftUI
 
+enum TypeSection {
+    case home
+    case preferiti
+    case completati
+}
+
 struct ListCard: View {
     @StateObject private var viewModel = DataViewModel.shared
     @State var presentingModal = false
     @State var text = ""
 
     private var colorCard: Color = .red
-    private var isPreferitiSection: Bool = false
+    private var typeSection: TypeSection = .home
     
-    init(isPreferitiSection: Bool) {
-        self.isPreferitiSection = isPreferitiSection
+    init(typeSection: TypeSection) {
+        self.typeSection = typeSection
     }
     
     var body: some View {
         NavigationView {
             VStack {
                 Spacer(minLength: 40)
-                if isPreferitiSection {
-                    List(viewModel.listCountDownObject.customItems + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}) { item in
+                switch typeSection {
+                case .home:
+                    let listHome = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == false && $0.isFinished == false} +
+                                   viewModel.listCountDownObject.items.filter{$0.isPrefered == false && $0.isFinished == false}
+                    List(listHome) { item in
                         CardTimer(object: item, idToPrefered: item.id)
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
                     .onAppear(perform: {
                         debugPrint("⚠️TAB PREFERITI")
-                        viewModel.objectWillChange.send()
                     })
-                } else {
-                    List(viewModel.listCountDownObject.items.filter{$0.isCustom == false}) { item in
+                case .preferiti:
+                    let listPreferiti = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == true} + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
+                    List(listPreferiti) { item in
                         CardTimer(object: item, idToPrefered: item.id)
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
                     .onAppear(perform: {
                         debugPrint("⚠️TAB HOME")
-                        viewModel.objectWillChange.send()
+                    })
+                case .completati:
+                    List(viewModel.listCountDownObject.customItems.filter{$0.isFinished == true} + viewModel.listCountDownObject.items.filter{$0.isFinished == true}) { item in
+                        CardTimer(object: item, idToPrefered: item.id)
+                    }
+                    .buttonStyle(PlainButtonStyle()) // Remove cell style
+                    .onAppear(perform: {
+                        debugPrint("⚠️TAB COmpletati")
                     })
                 }
             }
@@ -49,20 +65,23 @@ struct ListCard: View {
                 ToolbarItem(placement: .principal) {
                     VStack {
                         Text("My Count Down App").font(.headline)
-                        let preferedList = viewModel.listCountDownObject.customItems + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
-                        Text("We found \(isPreferitiSection ? preferedList.count : viewModel.listCountDownObject.items.count) item").font(.subheadline)
+                        switch typeSection{
+                        case .home:
+                            let listHome = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == false && $0.isFinished == false} +
+                                           viewModel.listCountDownObject.items.filter{$0.isPrefered == false && $0.isFinished == false}
+                            Text("We found \(listHome.count) item").font(.subheadline)
+                        case .preferiti:
+                            let listPreferiti = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == true} + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
+                            Text("We found \(listPreferiti.count) item").font(.subheadline)
+                        case .completati:
+                            let completeList = viewModel.listCountDownObject.customItems.filter{$0.isFinished == true} + viewModel.listCountDownObject.items.filter{$0.isFinished == true}
+                            Text("We found \(completeList.count) item").font(.subheadline)
+                        }
                     }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    if isPreferitiSection {
-                        Button(action: {
-                            self.presentingModal = true
-                        }) {
-                            Image(systemName: "plus.circle")
-                                .foregroundColor(.black)
-                        }
-                        .sheet(isPresented: $presentingModal) { AddNewTimerView(presentedAsModal: self.$presentingModal) }
-                    } else {
+                    switch typeSection {
+                    case .home:
                         Button(action: {
                             self.presentingModal = true
                         }) {
@@ -70,6 +89,16 @@ struct ListCard: View {
                                 .foregroundColor(.black)
                         }
                         .sheet(isPresented: $presentingModal) { OrderListView(presentedAsModal: self.$presentingModal) }
+                    case .preferiti:
+                        Button(action: {
+                            self.presentingModal = true
+                        }) {
+                            Image(systemName: "plus.circle")
+                                .foregroundColor(.black)
+                        }
+                        .sheet(isPresented: $presentingModal) { AddNewTimerView(presentedAsModal: self.$presentingModal) }
+                    case .completati:
+                        Button(action: {  }) { Text("") }
                     }
                 }
             }
@@ -79,6 +108,6 @@ struct ListCard: View {
 
 struct ListCard_Previews: PreviewProvider {
     static var previews: some View {
-        ListCard(isPreferitiSection: false)
+        ListCard(typeSection: .home)
     }
 }
