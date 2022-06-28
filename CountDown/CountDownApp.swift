@@ -23,8 +23,6 @@ struct CountDownApp: App {
                             print(error.localizedDescription)
                         }
                     }
-                    
-                    viewModel.receiceCountDown()
                 }
         }
     }

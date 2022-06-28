@@ -24,6 +24,7 @@ struct ListCard: View {
     private var typeSection: TypeSection = .home
     
     init(typeSection: TypeSection) {
+        print("🤬 LIST OBJECT: \(viewModel.listCountDownObject.items)")
         self.typeSection = typeSection
     }
      

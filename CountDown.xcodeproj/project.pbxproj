@@ -13,6 +13,7 @@
 		3F2C298A2868BF590020494C /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C29892868BF590020494C /* UserDefaults+.swift */; };
 		3F2C298C2869C32A0020494C /* OrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C298B2869C32A0020494C /* OrderListView.swift */; };
 		3F2C298E286AFCB60020494C /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C298D286AFCB60020494C /* BadgeView.swift */; };
+		3F2C2990286B5B400020494C /* CountDownData.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F2C298F286B5B400020494C /* CountDownData.json */; };
 		741B0145285A1C560090B764 /* CountDownApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741B0144285A1C560090B764 /* CountDownApp.swift */; };
 		741B0147285A1C560090B764 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741B0146285A1C560090B764 /* ContentView.swift */; };
 		741B0149285A1C5B0090B764 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 741B0148285A1C5B0090B764 /* Assets.xcassets */; };
@@ -49,6 +50,8 @@
 		3F2C29892868BF590020494C /* UserDefaults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+.swift"; sourceTree = "<group>"; };
 		3F2C298B2869C32A0020494C /* OrderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListView.swift; sourceTree = "<group>"; };
 		3F2C298D286AFCB60020494C /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		3F2C298F286B5B400020494C /* CountDownData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CountDownData.json; sourceTree = "<group>"; };
+		3F2C2991286B9ED30020494C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		741B0141285A1C560090B764 /* MyCountDown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCountDown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		741B0144285A1C560090B764 /* CountDownApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownApp.swift; sourceTree = "<group>"; };
 		741B0146285A1C560090B764 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -112,6 +115,8 @@
 		741B0143285A1C560090B764 /* CountDown */ = {
 			isa = PBXGroup;
 			children = (
+				3F2C2991286B9ED30020494C /* Info.plist */,
+				3F2C298F286B5B400020494C /* CountDownData.json */,
 				741B0144285A1C560090B764 /* CountDownApp.swift */,
 				741B0146285A1C560090B764 /* ContentView.swift */,
 				741B0170285A67BB0090B764 /* ListCard.swift */,
@@ -259,6 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				741B014C285A1C5B0090B764 /* Preview Assets.xcassets in Resources */,
+				3F2C2990286B5B400020494C /* CountDownData.json in Resources */,
 				741B0149285A1C5B0090B764 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -456,6 +462,7 @@
 				DEVELOPMENT_TEAM = 5YU82LVM5G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CountDown/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -486,6 +493,7 @@
 				DEVELOPMENT_TEAM = 5YU82LVM5G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CountDown/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

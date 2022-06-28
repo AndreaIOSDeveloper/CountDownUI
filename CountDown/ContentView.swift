@@ -11,6 +11,7 @@ import Foundation
 
 struct ContentView: View {
     @State private var tabSelection = 0
+    @StateObject private var viewModel = DataViewModel.shared
 
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     

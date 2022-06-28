@@ -83,6 +83,16 @@ enum TAG: Codable {
             return .other
         }
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case tv = "tv"
+        case other = "other"
+        case event = "event"
+        case movies = "movies"
+        case sport = "sport"
+        case game = "game"
+        case travel = "travel"
+    }
 }
 
 extension TAG: Identifiable {
