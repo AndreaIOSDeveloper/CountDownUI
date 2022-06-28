@@ -26,6 +26,25 @@ struct ListCard: View {
     init(typeSection: TypeSection) {
         self.typeSection = typeSection
     }
+     
+    private func filterHomeList() -> [CountDownObject] {
+        let listHome = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == false && $0.isFinished == false} +
+                       viewModel.listCountDownObject.items.filter{$0.isPrefered == false && $0.isFinished == false}
+        let filter = viewModel.arraytag.filter{$0.isCheck == true && $0.tag != "All"}
+        var filterListHome: [CountDownObject] = []
+        
+        if filter.count != 0 {
+            let stringFilter = filter.map{$0.tag}
+            stringFilter.forEach { filter in
+                filterListHome = listHome.filter { countDownObject in
+                    countDownObject.tags.contains{$0.title() == filter}
+                }
+            }
+            return filterListHome
+        } else {
+            return listHome
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -33,9 +52,7 @@ struct ListCard: View {
                 Spacer(minLength: 20)
                 switch typeSection {
                 case .home:
-                    let listHome = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == false && $0.isFinished == false} +
-                                   viewModel.listCountDownObject.items.filter{$0.isPrefered == false && $0.isFinished == false}
-                    List(listHome) { item in
+                    List(filterHomeList()) { item in
                         CardTimer(object: item, idToPrefered: item.id)
                     }
                     .buttonStyle(PlainButtonStyle()) // Remove cell style
@@ -83,9 +100,7 @@ struct ListCard: View {
                         Text("My Count Down App").font(.headline)
                         switch typeSection{
                         case .home:
-                            let listHome = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == false && $0.isFinished == false} +
-                                           viewModel.listCountDownObject.items.filter{$0.isPrefered == false && $0.isFinished == false}
-                            Text("We found \(listHome.count) item").font(.subheadline)
+                            Text("We found \(filterHomeList().count) item").font(.subheadline)
                         case .preferiti:
                             let listPreferiti = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == true} + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
                             Text("We found \(listPreferiti.count) item").font(.subheadline)
