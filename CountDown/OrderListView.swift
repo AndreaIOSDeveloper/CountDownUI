@@ -32,24 +32,26 @@ struct OrderListView: View {
         Section(header: Text("Select tag for order your count down list")) {
             List(viewModel.arraytag, id: \.self, selection: $selection) { item in
                 Button {
-                    viewModel.arraytag.enumerated().forEach { idx, newitem in
-                        if newitem == item {
-                            if newitem != viewModel.arraytag.first {
-                                viewModel.arraytag[0].isCheck = false
-                                removeAllCheck = false
-                                viewModel.arraytag[idx].isCheck = !viewModel.arraytag[idx].isCheck
-                            } else {
-                                removeAllCheck = true
-                                viewModel.arraytag[idx].isCheck = true
+                    DispatchQueue.main.async {
+                        viewModel.arraytag.enumerated().forEach { idx, newitem in
+                            if newitem == item {
+                                if newitem != viewModel.arraytag.first {
+                                    viewModel.arraytag[0].isCheck = false
+                                    removeAllCheck = false
+                                    viewModel.arraytag[idx].isCheck = !viewModel.arraytag[idx].isCheck
+                                } else {
+                                    removeAllCheck = true
+                                    viewModel.arraytag[idx].isCheck = true
+                                }
+                            }
+                            
+                            if removeAllCheck && idx != 0 {
+                                viewModel.arraytag[idx].isCheck = false
                             }
                         }
                         
-                        if removeAllCheck && idx != 0 {
-                            viewModel.arraytag[idx].isCheck = false
-                        }
+                        nActiveFiltri = viewModel.arraytag.filter{$0.isCheck == true && $0.tag != "All"}.count
                     }
-                    
-                    nActiveFiltri = viewModel.arraytag.filter{$0.isCheck == true && $0.tag != "All"}.count
                 } label: {
                     HStack {
                         Text(item.tag)

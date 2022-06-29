@@ -16,7 +16,8 @@ enum TypeSection {
 
 struct ListCard: View {
     @StateObject private var viewModel = DataViewModel.shared
-    @State var presentingModal = false
+    @State var presentingHomeModal = false
+    @State var presentingPreferitiModal = false
     @State var nActiveFiltri: Int = 0
     @State var text = ""
 
@@ -24,7 +25,7 @@ struct ListCard: View {
     private var typeSection: TypeSection = .home
     
     init(typeSection: TypeSection) {
-        print("🤬 LIST OBJECT: \(viewModel.listCountDownObject.items)")
+//        print("🤬 LIST OBJECT: \(viewModel.listCountDownObject.items)")
         self.typeSection = typeSection
     }
      
@@ -33,13 +34,14 @@ struct ListCard: View {
                        viewModel.listCountDownObject.items.filter{$0.isPrefered == false && $0.isFinished == false}
         let filter = viewModel.arraytag.filter{$0.isCheck == true && $0.tag != "All"}
         var filterListHome: [CountDownObject] = []
-        
+        var filterListHomeFilter: [CountDownObject] = []
         if filter.count != 0 {
             let stringFilter = filter.map{$0.tag}
             stringFilter.forEach { filter in
-                filterListHome = listHome.filter { countDownObject in
+                filterListHomeFilter = listHome.filter { countDownObject in
                     countDownObject.tags.contains{$0.title() == filter}
                 }
+                filterListHomeFilter.forEach{filterListHome.append($0)}
             }
             return filterListHome
         } else {
@@ -126,21 +128,21 @@ struct ListCard: View {
                     switch typeSection {
                     case .home:
                         Button(action: {
-                            self.presentingModal = true
+                            self.presentingHomeModal = true
                         }) {
                             Image(systemName: "flowchart")
                                 .foregroundColor(.primary)
                         }
-                        .sheet(isPresented: $presentingModal) { OrderListView(presentedAsModal: self.$presentingModal, nActiveFiltri: self.$nActiveFiltri) }
+                        .sheet(isPresented: $presentingHomeModal) { OrderListView(presentedAsModal: self.$presentingHomeModal, nActiveFiltri: self.$nActiveFiltri) }
                         .overlay(Badge(count: nActiveFiltri))
                     case .preferiti:
                         Button(action: {
-                            self.presentingModal = true
+                            self.presentingPreferitiModal = true
                         }) {
                             Image(systemName: "plus.circle")
                                 .foregroundColor(.primary)
                         }
-                        .sheet(isPresented: $presentingModal) { AddNewTimerView(presentedAsModal: self.$presentingModal) }
+                        .sheet(isPresented: $presentingPreferitiModal) { AddNewTimerView(presentedAsModal: self.$presentingPreferitiModal) }
                     case .completati:
                         Button(action: {  }) { Text("") }
                     }

@@ -180,6 +180,7 @@ struct CardTimer: View {
             Text(subTitle)
                 .padding(.bottom, 16.0)
                 .foregroundColor(Color.white)
+                .multilineTextAlignment(.center)
             HStack {
                 if !isFinishTime {
                     VStack {
