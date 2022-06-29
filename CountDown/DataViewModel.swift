@@ -100,6 +100,25 @@ struct CountDownObject: Identifiable, Equatable, Codable {
     public static func == (lhs: CountDownObject, rhs: CountDownObject) -> Bool {
         lhs.id == rhs.id
     }
+    
+    func convertColor(stringColor: String) -> Color {
+        switch stringColor {
+        case "red":
+            return .red
+        case "blue":
+            return .blue
+        case "green":
+            return .green
+        case "orange":
+            return .orange
+        case "yellow":
+            return .yellow
+        case "black":
+            return .black
+        default:
+            return .black
+        }
+    }
 }
 
 class CountDownPublisher: ObservableObject {

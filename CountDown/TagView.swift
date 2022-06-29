@@ -10,6 +10,7 @@ import SwiftUI
 
 struct TagView: View {
     var title: String
+    var colorTag: Color
     
     var body: some View {
         ZStack {
@@ -17,7 +18,7 @@ struct TagView: View {
                 .fill(.white)
                 .frame(width: 50, height: 30)
             Text(title)
-                .foregroundColor(.red)
+                .foregroundColor(colorTag)
                 .font(.system(size: 13))
                 .bold()
         }
@@ -26,6 +27,6 @@ struct TagView: View {
 
 struct TagView_Previews: PreviewProvider {
     static var previews: some View {
-        TagView(title: "Prova")
+        TagView(title: "Prova", colorTag: .red)
     }
 }

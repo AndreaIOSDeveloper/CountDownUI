@@ -102,7 +102,6 @@ extension TAG: Identifiable {
 struct CardTimer: View {
     private var title: String
     private var subTitle: String
-    private var colorCard: Color = .red
     private var time: TimeCard = TimeCard(years: 0, months: 0, days: 0, hours: 0, mins: 0, secs: 0)
     private var idToPrefered: String
     private var tags: [TAG]
@@ -111,7 +110,7 @@ struct CardTimer: View {
     }
     
     @StateObject private var viewModel = DataViewModel.shared
-    
+    @State private var colorCard: Color
     @State private var isPrefered: Bool
     @State private var isCustom: Bool
     @State private var isFinishTime: Bool
@@ -121,7 +120,7 @@ struct CardTimer: View {
     init(object: CountDownObject, idToPrefered: String) {
         self.title = object.title
         self.subTitle = object.subTitle
-        self.colorCard = .red
+        self.colorCard = object.convertColor(stringColor: object.colorCard)
         self.time = object.timer
         self.isPrefered = object.isPrefered
         self.idToPrefered = idToPrefered
@@ -155,8 +154,8 @@ struct CardTimer: View {
             HStack {
                 PreventableScrollView(canScroll: .constant(false)) {
                     ForEach(0 ..< tags.count, id: \.self) { tag in
-                        TagView(title: tags[tag].title())
-                            .foregroundColor(isCustom ? .blue : .red)
+                        TagView(title: tags[tag].title(), colorTag: colorCard)
+                            .foregroundColor(colorCard)
                             .font(.system(size: 13))
                     }
                 }
