@@ -15,9 +15,11 @@ struct AddNewTimerView: View {
     @State var title: String = ""
     @State var description: String = ""
     @State private var previewIndex = ""
+    @State private var previewColorIndex = ""
     @State private var customDataCountDown = Date()
     
     let previewOptions: [String] = [TAG.tv.title(), TAG.movies.title(), TAG.sport.title(), TAG.event.title(), TAG.game.title(), TAG.travel.title(), TAG.other.title()]
+    let previewColorsOptions: [String] = ["🔴 Red", "🟠 Orange","🟡 Yellow", "🟢 Green", "⚫️ Black", "🔵 Blue", "🟣 Pink"]
     let tomorrow = Date.now.addingTimeInterval(TimeInterval.infinity)
     
     init(presentedAsModal: Binding<Bool>) {
@@ -50,7 +52,7 @@ struct AddNewTimerView: View {
             }
         }
         
-        let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: "blue", isConfirmed: false, futureDate: customDataCountDown, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
+        let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: previewColorIndex, isConfirmed: false, futureDate: customDataCountDown, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
         viewModel.listCountDownObject.customItems.append(newCountDown)
         viewModel.saveCountDown(item: viewModel.listCountDownObject.customItems)
     }
@@ -70,6 +72,17 @@ struct AddNewTimerView: View {
                     VStack {
                         Picker("Please choose a Tags:", selection: $previewIndex) {
                             ForEach(previewOptions, id: \.self) {
+                                Text($0)
+                            }
+                        }
+//                        .pickerStyle(.wheel)
+                    }
+                }
+                
+                Section(header: Text("Color Card:")) {
+                    VStack {
+                        Picker("Please choose a color:", selection: $previewColorIndex) {
+                            ForEach(previewColorsOptions, id: \.self) {
                                 Text($0)
                             }
                         }

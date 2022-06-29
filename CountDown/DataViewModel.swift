@@ -105,16 +105,46 @@ struct CountDownObject: Identifiable, Equatable, Codable {
         switch stringColor {
         case "red":
             return .red
+        case "🔴 Red":
+            return .red
+        case "Rosso":
+            return .red
         case "blue":
+            return .blue
+        case "🔵 Blue":
+            return .blue
+        case "Blu":
             return .blue
         case "green":
             return .green
+        case "🟢 Green":
+            return .green
+        case "Verde":
+            return .green
         case "orange":
+            return .orange
+        case "🟠 Orange":
+            return .orange
+        case "Arancione":
             return .orange
         case "yellow":
             return .yellow
+        case "🟡 Yellow":
+            return .yellow
+        case "Giallo":
+            return .yellow
         case "black":
             return .black
+        case "⚫️ Black":
+            return .black
+        case "Nero":
+            return .black
+        case "pink":
+            return .pink
+        case "🟣 Pink":
+            return .pink
+        case "Rosa":
+            return .pink
         default:
             return .black
         }
