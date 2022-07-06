@@ -48,16 +48,22 @@ struct ListCard: View {
                                 .contentShape(Rectangle())
                             Spacer()
                         } else {
-                            Text(String(format: "There are no countdowns with the filters selected"))
+                            Text(String(format: "There are no countdowns available at the moment. Check your network and try again soon"))
                                 .font(.headline)
                                 .padding()
                                 .multilineTextAlignment(.center)
                             Button {
                                 print("⚠️ Retry Button")
-                                viewModel.retryToReceiveListOfCountDown()
+                                self.progress = 0
+                                self.isShowingLoader = true
+                                self.viewModel.retryToReceiveListOfCountDown()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    self.isShowingLoader = false
+                                    filterHomeList()
+                                }
                                 print("⚠️ LIST OBJECT: \(viewModel.listCountDownObject.items.isEmpty ? "🤬" : "🥳")")
                             } label: {
-                                TagView(title: "Retry", colorTag: .red)
+                                RetryView(title: "Retry", colorTag: .primary)
                             }
                             Spacer()
                         }

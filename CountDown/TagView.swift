@@ -25,6 +25,23 @@ struct TagView: View {
     }
 }
 
+struct RetryView: View {
+    var title: String
+    var colorTag: Color
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.primary)
+                .frame(width: 80, height: 50)
+            Text(title)
+                .foregroundColor(colorTag)
+                .font(.system(size: 13))
+                .bold()
+        }
+    }
+}
+
 struct TagView_Previews: PreviewProvider {
     static var previews: some View {
         TagView(title: "Prova", colorTag: .red)

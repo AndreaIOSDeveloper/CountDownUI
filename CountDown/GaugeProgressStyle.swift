@@ -19,6 +19,10 @@ struct GaugeProgressStyle: ProgressViewStyle {
                 .trim(from: 0, to: fractionCompleted)
                 .stroke(strokeColor, style: StrokeStyle(lineWidth: strokeWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
+                .padding(-6)
+            Text("Loading...")
+                .foregroundColor(Color.primary)
+                
         }
     }
 }
