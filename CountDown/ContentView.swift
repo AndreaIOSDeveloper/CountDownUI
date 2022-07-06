@@ -12,10 +12,6 @@ import Foundation
 struct ContentView: View {
     @State private var tabSelection = 0
     @StateObject private var viewModel = DataViewModel.shared
-
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
-    init() { }
     
     var body: some View {
         TabView(selection: $tabSelection) {
@@ -27,13 +23,13 @@ struct ContentView: View {
 
             ListCard(typeSection: .preferiti)
                 .tabItem {
-                    tabSelection == 1 ? Label("Preferiti", systemImage: "bookmark.fill").environment(\.symbolVariants, .none) : Label("Preferiti", systemImage: "bookmark").environment(\.symbolVariants, .none)
+                    tabSelection == 1 ? Label("Favourites", systemImage: "bookmark.fill").environment(\.symbolVariants, .none) : Label("Favourites", systemImage: "bookmark").environment(\.symbolVariants, .none)
                 }
                 .tag(1)
             
             ListCard(typeSection: .completati)
                 .tabItem {
-                    tabSelection == 2 ? Label("Completati", systemImage: "hourglass.bottomhalf.fill").environment(\.symbolVariants, .none) : Label("Completati", systemImage: "hourglass").environment(\.symbolVariants, .none)
+                    tabSelection == 2 ? Label("Completed", systemImage: "hourglass.bottomhalf.fill").environment(\.symbolVariants, .none) : Label("Completed", systemImage: "hourglass").environment(\.symbolVariants, .none)
                 }
                 .tag(2)
         }

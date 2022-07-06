@@ -20,33 +20,16 @@ struct ListCard: View {
     @State var presentingPreferitiModal = false
     @State var nActiveFiltri: Int = 0
     @State var text = ""
+    @State var homeList: [CountDownObject] = []
+    
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     private var colorCard: Color = .red
     private var typeSection: TypeSection = .home
     
     init(typeSection: TypeSection) {
-//        print("🤬 LIST OBJECT: \(viewModel.listCountDownObject.items)")
+        // print("⚠️ LIST OBJECT: \(viewModel.listCountDownObject.items.isEmpty ? "🤬" : "🥳")")
         self.typeSection = typeSection
-    }
-     
-    private func filterHomeList() -> [CountDownObject] {
-        let listHome = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == false && $0.isFinished == false} +
-                       viewModel.listCountDownObject.items.filter{$0.isPrefered == false && $0.isFinished == false}
-        let filter = viewModel.arraytag.filter{$0.isCheck == true && $0.tag != "All"}
-        var filterListHome: [CountDownObject] = []
-        var filterListHomeFilter: [CountDownObject] = []
-        if filter.count != 0 {
-            let stringFilter = filter.map{$0.tag}
-            stringFilter.forEach { filter in
-                filterListHomeFilter = listHome.filter { countDownObject in
-                    countDownObject.tags.contains{$0.title() == filter}
-                }
-                filterListHomeFilter.forEach{filterListHome.append($0)}
-            }
-            return filterListHome
-        } else {
-            return listHome
-        }
     }
     
     var body: some View {
@@ -55,14 +38,22 @@ struct ListCard: View {
                 Spacer(minLength: 20)
                 switch typeSection {
                 case .home:
-                    if filterHomeList().isEmpty {
-                            Text(String(format: "Non ci sono count down con i filtri selezionati"))
-                                .font(.headline)
-                                .padding()
-                                .multilineTextAlignment(.center)
-                            Spacer()
+                    if homeList.isEmpty {
+                        Text(String(format: "There are no countdowns with the filters selected"))
+                            .font(.headline)
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        Button {
+                            print("⚠️ Retry Button")
+                            viewModel.retryToReceiveListOfCountDown()
+                            print("⚠️ LIST OBJECT: \(viewModel.listCountDownObject.items.isEmpty ? "🤬" : "🥳")")
+                        } label: {
+                            TagView(title: "Retry", colorTag: .red)
+                        }
+                        
+                        Spacer()
                     } else {
-                        List(filterHomeList()) { item in
+                        List(homeList) { item in
                             CardTimer(object: item, idToPrefered: item.id)
                         }
                         .buttonStyle(PlainButtonStyle()) // Remove cell style
@@ -73,7 +64,7 @@ struct ListCard: View {
                 case .preferiti:
                     let listPreferiti = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == true} + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
                     if listPreferiti.isEmpty {
-                            Text(String(format: "Non hai count down preferiti"))
+                            Text(String(format: "You have no completed favourite countdowns"))
                                 .font(.headline)
                                 .padding()
                                 .multilineTextAlignment(.center)
@@ -90,7 +81,7 @@ struct ListCard: View {
                 case .completati:
                     let listCompletati = viewModel.listCountDownObject.customItems.filter{$0.isFinished == true} + viewModel.listCountDownObject.items.filter{$0.isFinished == true}
                     if listCompletati.isEmpty {
-                            Text(String(format: "Non hai count down completati"))
+                            Text(String(format: "You have no completed countdowns"))
                                 .font(.headline)
                                 .padding()
                                 .multilineTextAlignment(.center)
@@ -113,7 +104,7 @@ struct ListCard: View {
                         Text("My Count Down App").font(.headline)
                         switch typeSection{
                         case .home:
-                            Text("We found \(filterHomeList().count) item").font(.subheadline)
+                            Text("We found \(homeList.count) item").font(.subheadline)
                         case .preferiti:
                             let listPreferiti = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == true} + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
                             Text("We found \(listPreferiti.count) item").font(.subheadline)
@@ -148,6 +139,37 @@ struct ListCard: View {
                     }
                 }
             }
+        }
+        .task {
+            print("⚠️ task ListCard")
+            await viewModel.receiveListOfCountDown()
+        }
+        .onReceive(timer) { time in
+            DispatchQueue.main.async {
+                print("⚠️ onReceive")
+
+                filterHomeList()
+            }
+        }
+    }
+    
+    private func filterHomeList() {
+        let listHome = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == false && $0.isFinished == false} +
+                       viewModel.listCountDownObject.items.filter{$0.isPrefered == false && $0.isFinished == false}
+        let filter = viewModel.arraytag.filter{$0.isCheck == true && $0.tag != "All"}
+        var filterListHome: [CountDownObject] = []
+        var filterListHomeFilter: [CountDownObject] = []
+        if filter.count != 0 {
+            let stringFilter = filter.map{$0.tag}
+            stringFilter.forEach { filter in
+                filterListHomeFilter = listHome.filter { countDownObject in
+                    countDownObject.tags.contains{$0.title() == filter}
+                }
+                filterListHomeFilter.forEach{filterListHome.append($0)}
+            }
+            homeList = filterListHome
+        } else {
+            homeList = listHome
         }
     }
 }

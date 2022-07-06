@@ -184,22 +184,32 @@ class DataViewModel: ObservableObject {
                                      OrderListType(tag: TAG.sport.title(), isCheck: false)]
     
     init() {
-        receiceCountDown()
-        
-        subscribe()
+        print("⚠️ init DataViewModel")
+        receiceUserDefaultsCountDown()
     }
     
-    private func subscribe() {
-        DispatchQueue.main.async {
-            self.checkUserNameAvailable()
-                .removeDuplicates()
-                .sink { [weak self] jsonItem in
-                    guard let self = self else { return }
-                    jsonItem.isEmpty ? print("❌ JSON VUOTO !") : print("✅ Lista JSON: \(jsonItem)")
-                    self.listCountDownObject.items = jsonItem
-                }
-                .store(in: &self.subscriptions)
-        }
+    func retryToReceiveListOfCountDown() {
+        self.getCountDownDataJSON()
+            .receive(on: RunLoop.main)
+            .removeDuplicates()
+            .sink { [weak self] jsonItem in
+                guard let self = self else { return }
+                jsonItem.isEmpty ? print("❌ JSON VUOTO !") : print("✅ Lista JSON: \(jsonItem)")
+                self.listCountDownObject.items = jsonItem
+            }
+            .store(in: &self.subscriptions)
+    }
+    
+    func receiveListOfCountDown() async {
+        self.getCountDownDataJSON()
+            .receive(on: RunLoop.main)
+            .removeDuplicates()
+            .sink { [weak self] jsonItem in
+                guard let self = self else { return }
+                jsonItem.isEmpty ? print("❌ JSON VUOTO !") : print("✅ Lista JSON: \(jsonItem)")
+                self.listCountDownObject.items = jsonItem
+            }
+            .store(in: &self.subscriptions)
     }
 
     func checkFinishTimer(id: String) -> Bool {
@@ -278,7 +288,7 @@ class DataViewModel: ObservableObject {
         }
     }
     
-    func receiceCountDown() {
+    func receiceUserDefaultsCountDown() {
         let userDefaults = UserDefaults.standard
         do {
             let myPersonalCountDown = try userDefaults.getObject(forKey: "MyPersonalCountDown", castTo: [CountDownObject].self)
@@ -307,7 +317,7 @@ class DataViewModel: ObservableObject {
     
 // "http://napolirace.altervista.org/CountDownData.json"
     
-    private func checkUserNameAvailable() -> AnyPublisher<[CountDownObject], Never> {
+    private func getCountDownDataJSON() -> AnyPublisher<[CountDownObject], Never> {
         guard let url = URL(string: "http://napolirace.altervista.org/CountDownData.json") else {
             return Just([]).eraseToAnyPublisher()
         }
@@ -322,6 +332,7 @@ class DataViewModel: ObservableObject {
                     return []
                 }
             }
+            .receive(on: RunLoop.main)
             .replaceError(with: [])
             .eraseToAnyPublisher()
     }
