@@ -21,8 +21,10 @@ struct ListCard: View {
     @State var nActiveFiltri: Int = 0
     @State var text = ""
     @State var homeList: [CountDownObject] = []
-    
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State var isShowingLoader: Bool = true
+    @State private var progress = 0.2
+
+    let timer = Timer.publish(every: 0.2, on: .main, in: .common).autoconnect()
 
     private var colorCard: Color = .red
     private var typeSection: TypeSection = .home
@@ -39,19 +41,26 @@ struct ListCard: View {
                 switch typeSection {
                 case .home:
                     if homeList.isEmpty {
-                        Text(String(format: "There are no countdowns with the filters selected"))
-                            .font(.headline)
-                            .padding()
-                            .multilineTextAlignment(.center)
-                        Button {
-                            print("⚠️ Retry Button")
-                            viewModel.retryToReceiveListOfCountDown()
-                            print("⚠️ LIST OBJECT: \(viewModel.listCountDownObject.items.isEmpty ? "🤬" : "🥳")")
-                        } label: {
-                            TagView(title: "Retry", colorTag: .red)
+                        if isShowingLoader {
+                            ProgressView(value: progress, total: 1.0)
+                                .progressViewStyle(GaugeProgressStyle())
+                                .frame(width: 100, height: 100)
+                                .contentShape(Rectangle())
+                            Spacer()
+                        } else {
+                            Text(String(format: "There are no countdowns with the filters selected"))
+                                .font(.headline)
+                                .padding()
+                                .multilineTextAlignment(.center)
+                            Button {
+                                print("⚠️ Retry Button")
+                                viewModel.retryToReceiveListOfCountDown()
+                                print("⚠️ LIST OBJECT: \(viewModel.listCountDownObject.items.isEmpty ? "🤬" : "🥳")")
+                            } label: {
+                                TagView(title: "Retry", colorTag: .red)
+                            }
+                            Spacer()
                         }
-                        
-                        Spacer()
                     } else {
                         List(homeList) { item in
                             CardTimer(object: item, idToPrefered: item.id)
@@ -143,12 +152,16 @@ struct ListCard: View {
         .task {
             print("⚠️ task ListCard")
             await viewModel.receiveListOfCountDown()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.isShowingLoader = false
+                filterHomeList()
+            }
         }
         .onReceive(timer) { time in
-            DispatchQueue.main.async {
-                print("⚠️ onReceive")
-
-                filterHomeList()
+            if progress < 1.0 {
+                withAnimation {
+                    progress += 0.2
+                }
             }
         }
     }
