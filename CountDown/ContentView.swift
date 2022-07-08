@@ -32,6 +32,12 @@ struct ContentView: View {
                     tabSelection == 2 ? Label("Completed", systemImage: "hourglass.bottomhalf.fill").environment(\.symbolVariants, .none) : Label("Completed", systemImage: "hourglass").environment(\.symbolVariants, .none)
                 }
                 .tag(2)
+            
+            SettingsView()
+                .tabItem {
+                    tabSelection == 3 ? Label("Profile", systemImage: "person.fill").environment(\.symbolVariants, .none) : Label("Profile", systemImage: "person").environment(\.symbolVariants, .none)
+                }
+                .tag(3)
         }
     }
 }
