@@ -18,8 +18,8 @@ struct ListCard: View {
     @StateObject private var viewModel = DataViewModel.shared
     @State var presentingHomeModal = false
     @State var presentingPreferitiModal = false
-    @State var nActiveFiltri: Int = 0
-    @State var text = ""
+    @State private var nActiveFiltri: Int = 0
+    @State private var searchText = ""
     
     let timer = Timer.publish(every: 0.2, on: .main, in: .common).autoconnect()
     
@@ -66,7 +66,8 @@ struct ListCard: View {
                         
                         Spacer()
                     } else {
-                        List(viewModel.homeList) { item in
+                        let listFilterHome = (searchText.count != 0 && searchText != "") ? viewModel.homeList.filter{$0.title.contains(searchText.uppercased())} : viewModel.homeList
+                        List(listFilterHome) { item in
                             CardTimer(object: item, idToPrefered: item.id)
                         }
                         .buttonStyle(PlainButtonStyle()) // Remove cell style
@@ -74,6 +75,7 @@ struct ListCard: View {
                             debugPrint("⚠️TAB HOME")
                             self.viewModel.isShowingLoader = true
                         })
+                        .searchable(text: $searchText, prompt: "Search")
                     }
                 case .preferiti:
                     let listPreferiti = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == true} + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
