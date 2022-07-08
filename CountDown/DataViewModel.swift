@@ -139,12 +139,18 @@ struct CountDownObject: Identifiable, Equatable, Codable {
             return .black
         case "Nero":
             return .black
-        case "pink":
-            return .pink
-        case "🟣 Pink":
-            return .pink
-        case "Rosa":
-            return .pink
+        case "purple":
+            return .purple
+        case "🟣 Purple":
+            return .purple
+        case "Viola":
+            return .purple
+        case "🟤 Brown":
+            return .brown
+        case "brown":
+            return .brown
+        case "Marrone":
+            return .brown
         default:
             return .black
         }
@@ -155,13 +161,22 @@ class CountDownPublisher: ObservableObject {
     @Published var items: [CountDownObject] = []
     @Published var customItems: [CountDownObject] = []
     
-    @Published var itemsTest: [CountDownObject] = [CountDownObject(id: "0", title: "STRANGE THINGS", subTitle: "SEASON 4 VOLUME 1 RELEASE DATA", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 07, day: 01, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
-                                               CountDownObject(id: "1", title: "TRAVEL", subTitle: "GO TO IBIZA", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 06, day: 29, hour: 18, minute: 0, second: 0))!, isPrefered: true, tags: [.travel]),
-                                               CountDownObject(id: "2", title: "ONE PUNCH MAN", subTitle: "SEASON 3 PREMIER DATA", colorCard:  "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 09, day: 13, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
-                                               CountDownObject(id: "3", title: "BETTER CALL SAUL", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard:  "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
-                                               CountDownObject(id: "4", title: "SQUID GAME", subTitle: "SEASON 6 VOLUME 2 RELEASE DATA", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 27, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
-                                               CountDownObject(id: "5", title: "NAPOLI VS GENOA", subTitle: "SERIE A 1a GIORNATA", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 08, day: 02, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.sport, .tv]),
-                                               CountDownObject(id: "6", title: "NEW YEARS DAY", subTitle: "COUNT DOWN TO THE YEAR 2023", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 12, day: 31, hour: 23, minute: 59, second: 59))!, isPrefered: false, tags: [.event, .other])]
+    @Published var itemsTest: [CountDownObject] = [CountDownObject(id: "0", title: "STRANGE THINGS", subTitle: "SEASON 5 VOLUME 1 RELEASE DATA", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2024, month: 07, day: 01, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
+                                                   CountDownObject(id: "1", title: "AVATAR: THE WAY OF WATER", subTitle: "RELEASE DATA", colorCard: "blue", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 12, day: 16, hour: 12, minute: 0, second: 0))!, isPrefered: false, tags: [.movies]),
+                                               CountDownObject(id: "2", title: "ONE PUNCH MAN", subTitle: "SEASON 3 PREMIER DATA", colorCard:  "black", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 09, day: 13, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
+                                               CountDownObject(id: "3", title: "SQUID GAME", subTitle: "SEASON 2 RELEASE DATA", colorCard: "red", isConfirmed: false, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 01, day: 22, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.tv]),
+                                               CountDownObject(id: "4", title: "SERIE A", subTitle: "FIRST MATCH", colorCard: "green", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 08, day: 02, hour: 0, minute: 0, second: 0))!, isPrefered: false, tags: [.sport, .tv]),
+                                                   CountDownObject(id: "5", title: "FIFA WORLD CUP", subTitle: "2022 - QATAR", colorCard: "yellow", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 21, hour: 11, minute: 00, second: 00))!, isPrefered: false, tags: [.sport, .tv]),
+                                               CountDownObject(id: "6", title: "NEW YEARS DAY", subTitle: "COUNT DOWN TO THE YEAR 2023", colorCard: "red", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 12, day: 31, hour: 23, minute: 59, second: 59))!, isPrefered: false, tags: [.event]),
+                                                   CountDownObject(id: "7", title: "SHREK 5", subTitle: "RELEASE DATA", colorCard: "green", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 05, day: 20, hour: 12, minute: 00, second: 00))!, isPrefered: false, tags: [.movies]),
+                                                   CountDownObject(id: "8", title: "THE SIMPSONS", subTitle: "SEASON 34 RELEASE DATA", colorCard: "yellow", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 09, day: 26, hour: 1, minute: 00, second: 00))!, isPrefered: false, tags: [.tv]),
+                                                   CountDownObject(id: "9", title: "HALLOWEEN", subTitle: "", colorCard: "orange", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 10, day: 31, hour: 00, minute: 00, second: 00))!, isPrefered: false, tags: [.event]),
+                                                   CountDownObject(id: "10", title: "BLACK PANTHER: WAKANDA FOREVER", subTitle: "RELEASE DATA", colorCard: "black", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 11, day: 11, hour: 00, minute: 00, second: 00))!, isPrefered: false, tags: [.movies]),
+                                                   CountDownObject(id: "11", title: "SPIDER-MAN: ACROSS THE SPIDER-VERSE", subTitle: "RELEASE DATA", colorCard: "red", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 6, day: 2, hour: 00, minute: 00, second: 00))!, isPrefered: false, tags: [.movies]),
+                                                   CountDownObject(id: "12", title: "STAR WARS DAY", subTitle: "", colorCard: "black", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 5, day: 4, hour: 00, minute: 00, second: 00))!, isPrefered: false, tags: [.event]),
+                                                   CountDownObject(id: "13", title: "JOHN WICK: CHAPTER 4", subTitle: "RELEASE DATE", colorCard: "blue", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2023, month: 3, day: 24, hour: 12, minute: 00, second: 00))!, isPrefered: false, tags: [.movies]),
+                                                   CountDownObject(id: "14", title: "HOUSE OF THE DRAGON", subTitle: "SEASON 1 PREMIER DATE", colorCard: "red", isConfirmed: true, futureDate: Calendar.current.date(from: DateComponents(year: 2022, month: 8, day: 21, hour: 12, minute: 00, second: 00))!, isPrefered: false, tags: [.tv]),
+                                            ]
 }
 
 class DataViewModel: ObservableObject {
@@ -169,10 +184,14 @@ class DataViewModel: ObservableObject {
     
     private var subscriptions = Set<AnyCancellable>()
 
+    @Published var externalListCountDownObject = CountDownPublisher()
     @Published var listCountDownObject = CountDownPublisher()
     
     //WORK AROUND FOR PUSH OF COMPUTER PROPERTY
     @Published var updateUI = false
+    @Published var isShowingLoader: Bool = true
+    @Published var progress = 0.2
+    @Published var homeList: [CountDownObject] = []
     
     @Published var arraytag: [OrderListType] = [OrderListType(tag: "All", isCheck: true),
                                      OrderListType(tag: TAG.other.title(), isCheck: false),
@@ -185,7 +204,8 @@ class DataViewModel: ObservableObject {
     
     init() {
         print("⚠️ init DataViewModel")
-        receiceUserDefaultsCountDown()
+        encodeObject()
+        receicePersonalUserDefaultsCountDown()
     }
     
     func retryToReceiveListOfCountDown() {
@@ -195,7 +215,22 @@ class DataViewModel: ObservableObject {
             .sink { [weak self] jsonItem in
                 guard let self = self else { return }
                 jsonItem.isEmpty ? print("❌ JSON VUOTO !") : print("✅ Lista JSON: \(jsonItem)")
-                self.listCountDownObject.items = jsonItem
+                self.externalListCountDownObject.items = jsonItem
+                
+                self.receiceListUserDefaultsCountDown {
+                    if self.listCountDownObject.items.isEmpty {
+                        print("⚠️ Lista count down vuota la inizializzo")
+                        self.listCountDownObject.items = self.externalListCountDownObject.items
+                    } else {
+                        print("⚠️ PRESENTE GIA LA LISTA, AGGIORNO...")
+                        self.externalListCountDownObject.items.forEach { item in
+                            let isContaints = self.listCountDownObject.items.contains(item)
+                            if !isContaints {
+                                self.listCountDownObject.items.append(item)
+                            }
+                        }
+                    }
+                }
             }
             .store(in: &self.subscriptions)
     }
@@ -207,11 +242,46 @@ class DataViewModel: ObservableObject {
             .sink { [weak self] jsonItem in
                 guard let self = self else { return }
                 jsonItem.isEmpty ? print("❌ JSON VUOTO !") : print("✅ Lista JSON: \(jsonItem)")
-                self.listCountDownObject.items = jsonItem
+                self.externalListCountDownObject.items = jsonItem
+                print("🥳 EXTERNAL LIST : \(self.externalListCountDownObject.items)")
+                self.receiceListUserDefaultsCountDown {
+                    if self.listCountDownObject.items.isEmpty {
+                        //First time
+                        print("⚠️ Lista count down vuota la inizializzo")
+                        self.listCountDownObject.items = self.externalListCountDownObject.items
+                        self.saveListCountDown(item: self.externalListCountDownObject.items)
+                    } else {
+                        print("⚠️ PRESENTE GIA LA LISTA, AGGIORNO...")
+                        self.externalListCountDownObject.items.forEach { item in
+                            let isContaints = self.listCountDownObject.items.contains(item)
+                            if !isContaints {
+                                self.listCountDownObject.items.append(item)
+                                self.updateUserDefault(item: self.listCountDownObject.items)
+                            }
+                        }
+                    }
+                }
             }
             .store(in: &self.subscriptions)
     }
-
+    
+    func updateUserDefault(item: [CountDownObject]) {
+        let userDefaults = UserDefaults.standard
+        userDefaults.removeObject(forKey: "MyListCountDown")
+        print("⚠️ ELIMINO LA VECCHIA LISTA DEI COUNTDOWN")
+        userDefaults.synchronize()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            do {
+                try userDefaults.setObject(item, forKey: "MyListCountDown")
+                print("🟢 UPDATE LISTA DEI COUNTDOWN \(item)")
+            } catch {
+                print(error.localizedDescription)
+                print("🟠 ERRORE UPDATE DELLA LISTA DEI COUNTDOWN \(error.localizedDescription)")
+            }
+        }
+    }
+    
     func checkFinishTimer(id: String) -> Bool {
         updateUI.toggle()
         var returnElem: Bool = false
@@ -271,31 +341,56 @@ class DataViewModel: ObservableObject {
     private func encodeObject() {
         let jsonEncoder = JSONEncoder()
         do {
-            let jsonData = try jsonEncoder.encode(listCountDownObject.items)
+            let jsonData = try jsonEncoder.encode(listCountDownObject.itemsTest)
             let jsonString = String(data: jsonData, encoding: .utf8)!
-            print(jsonString)
+            print("✅🟢 CONVERT JSON: \((jsonString))")
         } catch {
             print(error)
         }
     }
     
-    func saveCountDown(item: [CountDownObject]) {
+    func saveListCountDown(item: [CountDownObject]) {
         let userDefaults = UserDefaults.standard
         do {
-            try userDefaults.setObject(item, forKey: "MyPersonalCountDown")
+            try userDefaults.setObject(item, forKey: "MyListCountDown")
+            print("🟢 SALVO LA LISTA DEI COUNTDOWN \(item)")
         } catch {
-            print(error.localizedDescription)
+            print("🟠 ERRORE NEL SALVATAGGIO DELLA LISTA DEI COUNTDOWN \(error.localizedDescription)")
         }
     }
     
-    func receiceUserDefaultsCountDown() {
+    func savePersonalCountDown(item: [CountDownObject]) {
+        let userDefaults = UserDefaults.standard
+        do {
+            try userDefaults.setObject(item, forKey: "MyPersonalCountDown")
+            print("🟢 SALVO LA LISTA DEI COUNTDOWN PERSONALI \(item)")
+        } catch {
+            print(error.localizedDescription)
+            print("🟠 ERRORE NEL SALVATAGGIO DELLA LISTA DEI COUNTDOWN PERSONALI \(error.localizedDescription)")
+        }
+    }
+    
+    func receicePersonalUserDefaultsCountDown() {
         let userDefaults = UserDefaults.standard
         do {
             let myPersonalCountDown = try userDefaults.getObject(forKey: "MyPersonalCountDown", castTo: [CountDownObject].self)
             print("🟢 SCARICO I COUNTDOWN PERSONALI \(myPersonalCountDown)")
             listCountDownObject.customItems = myPersonalCountDown
         } catch {
-            print("🟠 ERRORE COUNTDOWN PERSONALI \(error.localizedDescription)")
+            print("🟠 ERRORE NEL RICEVERE I COUNTDOWN PERSONALI \(error.localizedDescription)")
+        }
+    }
+    
+    func receiceListUserDefaultsCountDown(callback: ()->()) {
+        let userDefaults = UserDefaults.standard
+        do {
+            let myListCountDown = try userDefaults.getObject(forKey: "MyListCountDown", castTo: [CountDownObject].self)
+            print("🟢 SCARICO I COUNTDOWN \(myListCountDown)")
+            listCountDownObject.items = myListCountDown
+            callback()
+        } catch {
+            print("🟠 ERRORE COUNTDOWN \(error.localizedDescription)")
+            callback()
         }
     }
     

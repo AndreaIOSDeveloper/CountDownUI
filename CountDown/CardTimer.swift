@@ -115,7 +115,7 @@ struct CardTimer: View {
     @State private var isCustom: Bool
     @State private var isFinishTime: Bool
     
-    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    private let timerCard = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     init(object: CountDownObject, idToPrefered: String) {
         self.title = object.title
@@ -147,6 +147,8 @@ struct CardTimer: View {
                     debugPrint("🥵 Ho tappato un elemento CUSTOM: \(viewModel.listCountDownObject.customItems[idx].title) è diventato: \(viewModel.listCountDownObject.customItems[idx].isPrefered)")
             }
         })
+        
+        viewModel.updateUserDefault(item: viewModel.listCountDownObject.items)
     }
     
     var body: some View {
@@ -175,6 +177,7 @@ struct CardTimer: View {
             Text(title)
                 .foregroundColor(Color.white)
                 .bold()
+                .multilineTextAlignment(.center)
                 .padding(.bottom, 4.0)
             
             Text(subTitle)
@@ -224,8 +227,8 @@ struct CardTimer: View {
                         .padding(.bottom, 4.0)
                 }
             }
-            .onReceive(timer) { time in
-                DispatchQueue.main.async {
+            .onReceive(timerCard) { time in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     isFinishTime = viewModel.checkFinishTimer(id: idToPrefered)
                     isPrefered = viewModel.checkPrefered(findElem: idToPrefered)
                 }

@@ -19,12 +19,11 @@ struct AddNewTimerView: View {
     @State private var customDataCountDown = Date()
     
     let previewOptions: [String] = [TAG.tv.title(), TAG.movies.title(), TAG.sport.title(), TAG.event.title(), TAG.game.title(), TAG.travel.title(), TAG.other.title()]
-    let previewColorsOptions: [String] = ["🔴 Red", "🟠 Orange","🟡 Yellow", "🟢 Green", "⚫️ Black", "🔵 Blue", "🟣 Pink"]
+    let previewColorsOptions: [String] = ["🔴 Red", "🟠 Orange","🟡 Yellow", "🟢 Green", "⚫️ Black", "🔵 Blue", "🟣 Purple", "🟤 Brown"]
     let tomorrow = Date.now.addingTimeInterval(TimeInterval.infinity)
     
     init(presentedAsModal: Binding<Bool>) {
         self._presentedAsModal = presentedAsModal
-  
     }
     
     private func createNotification() {
@@ -52,9 +51,14 @@ struct AddNewTimerView: View {
             }
         }
         
-        let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: previewColorIndex, isConfirmed: false, futureDate: customDataCountDown, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
-        viewModel.listCountDownObject.customItems.append(newCountDown)
-        viewModel.saveCountDown(item: viewModel.listCountDownObject.customItems)
+        let isAlreadyPresent = viewModel.listCountDownObject.customItems.map { $0.title == title && $0.futureDate == customDataCountDown }
+        if !isAlreadyPresent.contains(true) {
+            let newCountDown = CountDownObject(id: "P_\(viewModel.listCountDownObject.customItems.count)", title: title, subTitle: description, colorCard: previewColorIndex, isConfirmed: false, futureDate: customDataCountDown, isPrefered: true, tags: [TAG.enumFromString(string: previewIndex)], isCustom: true)
+            viewModel.listCountDownObject.customItems.append(newCountDown)
+            viewModel.savePersonalCountDown(item: viewModel.listCountDownObject.customItems)
+        } else {
+            debugPrint("❌ Already present)")
+        }
     }
     
     var body: some View {
@@ -105,15 +109,19 @@ struct AddNewTimerView: View {
                         LargeButton(title: "Cancel",
                                     backgroundColor: .white,
                                     foregroundColor: .black) {
-                            self.presentedAsModal = false
+                            DispatchQueue.main.async {
+                                self.presentedAsModal = false
+                            }
                         }
                         
                         Spacer()
                         
                         LargeButton(title: "Save",
                                     backgroundColor: .black) {
-                            self.presentedAsModal = false
-                            createNotification()
+                            DispatchQueue.main.async {
+                                self.presentedAsModal = false
+                                self.createNotification()
+                            }
                         }
                     }
                 }

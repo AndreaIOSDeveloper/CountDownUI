@@ -20,12 +20,9 @@ struct ListCard: View {
     @State var presentingPreferitiModal = false
     @State var nActiveFiltri: Int = 0
     @State var text = ""
-    @State var homeList: [CountDownObject] = []
-    @State var isShowingLoader: Bool = true
-    @State private var progress = 0.2
-
+    
     let timer = Timer.publish(every: 0.2, on: .main, in: .common).autoconnect()
-
+    
     private var colorCard: Color = .red
     private var typeSection: TypeSection = .home
     
@@ -40,67 +37,89 @@ struct ListCard: View {
                 Spacer(minLength: 20)
                 switch typeSection {
                 case .home:
-                    if homeList.isEmpty {
-                        if isShowingLoader {
-                            ProgressView(value: progress, total: 1.0)
+                    if viewModel.homeList.isEmpty {
+                        if viewModel.isShowingLoader {
+                            ProgressView(value:  viewModel.progress, total: 1)
                                 .progressViewStyle(GaugeProgressStyle())
                                 .frame(width: 100, height: 100)
                                 .contentShape(Rectangle())
-                            Spacer()
+                            
                         } else {
-                            Text(String(format: "There are no countdowns available at the moment. Check your network and try again soon"))
+                            Text(String(format: "There are no countdowns available.\n Check your network and try again soon"))
                                 .font(.headline)
                                 .padding()
                                 .multilineTextAlignment(.center)
                             Button {
                                 print("⚠️ Retry Button")
-                                self.progress = 0
-                                self.isShowingLoader = true
+                                self.viewModel.progress = 0
+                                self.viewModel.isShowingLoader = true
                                 self.viewModel.retryToReceiveListOfCountDown()
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    self.isShowingLoader = false
+                                    self.viewModel.isShowingLoader = false
                                     filterHomeList()
                                 }
                                 print("⚠️ LIST OBJECT: \(viewModel.listCountDownObject.items.isEmpty ? "🤬" : "🥳")")
                             } label: {
                                 RetryView(title: "Retry", colorTag: .primary)
                             }
-                            Spacer()
                         }
+                        
+                        Spacer()
                     } else {
-                        List(homeList) { item in
+                        List(viewModel.homeList) { item in
                             CardTimer(object: item, idToPrefered: item.id)
                         }
                         .buttonStyle(PlainButtonStyle()) // Remove cell style
                         .onAppear(perform: {
-                            debugPrint("⚠️TAB PREFERITI")
+                            debugPrint("⚠️TAB HOME")
+                            self.viewModel.isShowingLoader = true
                         })
                     }
                 case .preferiti:
                     let listPreferiti = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == true} + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
+                    
                     if listPreferiti.isEmpty {
-                            Text(String(format: "You have no completed favourite countdowns"))
+                        if viewModel.isShowingLoader {
+                            ProgressView(value: viewModel.progress, total: 1.0)
+                                .progressViewStyle(GaugeProgressStyle())
+                                .frame(width: 100, height: 100)
+                                .contentShape(Rectangle())
+                            
+                        } else {
+                            Text(String(format: "You have no favourite countdowns"))
                                 .font(.headline)
                                 .padding()
                                 .multilineTextAlignment(.center)
-                            Spacer()
+                        }
+                        Spacer()
                     } else {
                         List(listPreferiti) { item in
                             CardTimer(object: item, idToPrefered: item.id)
                         }
                         .buttonStyle(PlainButtonStyle()) // Remove cell style
                         .onAppear(perform: {
-                            debugPrint("⚠️TAB HOME")
+                            debugPrint("⚠️TAB PREFERITI")
+                            self.viewModel.isShowingLoader = true
+                            
                         })
                     }
                 case .completati:
                     let listCompletati = viewModel.listCountDownObject.customItems.filter{$0.isFinished == true} + viewModel.listCountDownObject.items.filter{$0.isFinished == true}
+                    
                     if listCompletati.isEmpty {
+                        if viewModel.isShowingLoader {
+                            ProgressView(value: viewModel.progress, total: 1.0)
+                                .progressViewStyle(GaugeProgressStyle())
+                                .frame(width: 100, height: 100)
+                                .contentShape(Rectangle())
+                        } else {
                             Text(String(format: "You have no completed countdowns"))
                                 .font(.headline)
                                 .padding()
                                 .multilineTextAlignment(.center)
-                            Spacer()
+                        }
+                        
+                        Spacer()
                     } else {
                         List(listCompletati) { item in
                             CardTimer(object: item, idToPrefered: item.id)
@@ -108,6 +127,7 @@ struct ListCard: View {
                         .buttonStyle(PlainButtonStyle()) // Remove cell style
                         .onAppear(perform: {
                             debugPrint("⚠️TAB COMPLETATI")
+                            self.viewModel.isShowingLoader = true
                         })
                     }
                 }
@@ -117,9 +137,9 @@ struct ListCard: View {
                 ToolbarItem(placement: .principal) {
                     VStack {
                         Text("My Count Down App").font(.headline)
-                        switch typeSection{
+                        switch typeSection {
                         case .home:
-                            Text("We found \(homeList.count) item").font(.subheadline)
+                            Text("We found \(viewModel.homeList.count) item").font(.subheadline)
                         case .preferiti:
                             let listPreferiti = viewModel.listCountDownObject.customItems.filter{$0.isPrefered == true} + viewModel.listCountDownObject.items.filter{$0.isPrefered == true}
                             Text("We found \(listPreferiti.count) item").font(.subheadline)
@@ -156,17 +176,19 @@ struct ListCard: View {
             }
         }
         .task {
-            print("⚠️ task ListCard")
-            await viewModel.receiveListOfCountDown()
+            if typeSection == .home {
+                print("⚠️ task ListCard")
+                await viewModel.receiveListOfCountDown()
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.isShowingLoader = false
-                filterHomeList()
+                self.viewModel.isShowingLoader = false
+                self.filterHomeList()
             }
         }
         .onReceive(timer) { time in
-            if progress < 1.0 {
+            if viewModel.progress < 1 {
                 withAnimation {
-                    progress += 0.2
+                    viewModel.progress += 0.2
                 }
             }
         }
@@ -186,9 +208,9 @@ struct ListCard: View {
                 }
                 filterListHomeFilter.forEach{filterListHome.append($0)}
             }
-            homeList = filterListHome
+            viewModel.homeList = filterListHome
         } else {
-            homeList = listHome
+            viewModel.homeList = listHome
         }
     }
 }
