@@ -9,6 +9,12 @@ import Foundation
 import SwiftUI
 import Combine
 
+//extension Data: Identifiable {
+//    public var id: ObjectIdentifier {
+//        return self.id
+//    }
+//}
+
 struct CountDownObject: Identifiable, Equatable, Codable {
     var id: String
     var title: String
@@ -26,17 +32,22 @@ struct CountDownObject: Identifiable, Equatable, Codable {
         }
         return Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: futureDate)
     }
-
+    
     var timer: TimeCard {
         return TimeCard(years: countdown.year ?? 0,
-                                months: countdown.month ?? 0,
-                                days: countdown.day ?? 0,
-                                hours: countdown.hour ?? 0,
-                                mins: countdown.minute ?? 0,
-                                secs: countdown.second ?? 0)
-   }
-
-   var isFinished: Bool = false
+                        months: countdown.month ?? 0,
+                        days: countdown.day ?? 0,
+                        hours: countdown.hour ?? 0,
+                        mins: countdown.minute ?? 0,
+                        secs: countdown.second ?? 0)
+    }
+    
+    var isFinished: Bool = false
+    
+    var compareData: Int {
+        let timeInterval = futureDate.timeIntervalSince1970
+        return Int(timeInterval)
+    }
     
     enum CodingKeys: String, CodingKey {
         case id = "id"

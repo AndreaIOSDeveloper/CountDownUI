@@ -5,9 +5,11 @@
 //  Created by Di Francia, Andrea (Contractor) on 08/07/22.
 //
 
+import StoreKit
 import SwiftUI
 
 struct SettingsView: View {
+    @State private var isSharePresented: Bool = false
     @StateObject private var viewModel = DataViewModel.shared
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -20,8 +22,10 @@ struct SettingsView: View {
     let settings = [
            "Notification",
            "Privacy",
-           "Contact us",
            "Credits",
+           "Share with friend",
+           "Contact us",
+           "Vote"
        ]
     
     init() {   }
@@ -91,30 +95,63 @@ struct SettingsView: View {
             }
                 
                 Spacer()
-             
-                List(settings, id: \.self) { setting in
-                    if setting == "Notification" {
-                        Toggle(setting, isOn: $isToggle)
-                    } else {
-                    
-                    NavigationLink(destination: PlayerView(name: setting)) {
-                        Text(setting)
-                    }
+                
+                List {
+                    ForEach(settings, id: \.self) { setting in
+                        if setting == "Notification" {
+                            Toggle(setting, isOn: $isToggle)
+                        } else if setting == "Contact us" {
+                            MailView()
+                        } else if setting == "Vote" {
+                            Button {
+                                SettingsView.requestReview()
+                            } label: {
+                                Text("Vote on App Store")
+                            }
+                        } else if setting == "Share with friend" {
+                            Button("Share with friend") {
+                                       self.isSharePresented = true
+                                   }
+                                   .sheet(isPresented: $isSharePresented, onDismiss: {
+                                       print("Dismiss share with friend")
+                                   }, content: {
+                                       ActivityViewController(activityItems: ["I use MyCountDown app, you can download the app on the app store:", URL(string: "https://www.apple.com")!])
+                                   })
+                        } else {
+                            NavigationLink(destination: PlayerView(name: setting)) {
+                                Text(setting)
+                            }
+                        }
                     }
                 }
+                
                 .navigationTitle("Profile")
                 
-                Text("Made with ❤️ from Andrea Di Francia")
+                Text("VERSION 1.0 (16573894)")
+                    .font(.callout)
+                    .padding()
+                    .multilineTextAlignment(.center)
+                    .font(.footnote)
+                    .foregroundColor(.gray)
+                
+                Text("made with ❤️ by Andrea Di Francia")
+                    .font(.callout)
                     .padding()
                     .multilineTextAlignment(.center)
                     .font(.footnote)
                     .foregroundColor(.gray)
             }
-            
-            
         }
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.large)
+    }
+    
+    static func requestReview() {
+        DispatchQueue.main.async {
+            if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+                SKStoreReviewController.requestReview(in: scene)
+            }
+        }
     }
     
     private func saveCurrentUserDate() {
@@ -152,9 +189,6 @@ extension Date {
     func passedTime(from date: Date) -> DateComponents {
         let difference = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: date, to: self)
 //        let strDay = String(format: "%02d", difference.day ?? 00)
-//        let strOre = String(format: "%02d", difference.hour ?? 00)
-//        let strMin = String(format: "%02d", difference.minute ?? 00)
-//        let strSec = String(format: "%02d", difference.second ?? 00)
         return difference
 //        return "day: \(strDay) Hours:\(strOre):\(strMin):\(strSec)"
     }
@@ -164,7 +198,7 @@ struct PlayerView: View {
     let name: String
 
     var body: some View {
-        Text("Selected player: \(name)")
-            .font(.largeTitle)
+        Text("Open section: \(name)")
+            .font(.body)
     }
 }

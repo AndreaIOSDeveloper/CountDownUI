@@ -66,8 +66,12 @@ struct ListCard: View {
                         
                         Spacer()
                     } else {
-                        let listFilterHome = (searchText.count != 0 && searchText != "") ? viewModel.homeList.filter{$0.title.contains(searchText.uppercased())} : viewModel.homeList
-                        List(listFilterHome) { item in
+                        var listFilterHome = (searchText.count != 0 && searchText != "") ? viewModel.homeList.filter{$0.title.contains(searchText.uppercased())} : viewModel.homeList
+
+                        let sortedList = listFilterHome.sort(by: { $0.compareData < $1.compareData })
+                        let sortededList = listFilterHome.sorted(by: { $0.compareData < $1.compareData })
+
+                        List(sortededList) { item in
                             CardTimer(object: item, idToPrefered: item.id)
                         }
                         .buttonStyle(PlainButtonStyle()) // Remove cell style

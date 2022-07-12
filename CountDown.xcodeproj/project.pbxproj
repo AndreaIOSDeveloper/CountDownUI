@@ -15,6 +15,8 @@
 		3F2C298E286AFCB60020494C /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C298D286AFCB60020494C /* BadgeView.swift */; };
 		3F2C2990286B5B400020494C /* CountDownData.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F2C298F286B5B400020494C /* CountDownData.json */; };
 		3F2C2993286BAD040020494C /* LargeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2C2992286BAD040020494C /* LargeButtonView.swift */; };
+		3F543C3D287DB60E008E13A1 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F543C3C287DB60E008E13A1 /* MailView.swift */; };
+		3F543C3F287E0D5A008E13A1 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F543C3E287E0D5A008E13A1 /* ActivityView.swift */; };
 		3F92DA0B2878D2C600D4E703 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92DA0A2878D2C600D4E703 /* SettingsView.swift */; };
 		3FDF1955287627E800CB61CB /* GaugeProgressStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDF1954287627E700CB61CB /* GaugeProgressStyle.swift */; };
 		741B0145285A1C560090B764 /* CountDownApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741B0144285A1C560090B764 /* CountDownApp.swift */; };
@@ -56,6 +58,8 @@
 		3F2C298F286B5B400020494C /* CountDownData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CountDownData.json; sourceTree = "<group>"; };
 		3F2C2991286B9ED30020494C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3F2C2992286BAD040020494C /* LargeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButtonView.swift; sourceTree = "<group>"; };
+		3F543C3C287DB60E008E13A1 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
+		3F543C3E287E0D5A008E13A1 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		3F92DA0A2878D2C600D4E703 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3FDF1954287627E700CB61CB /* GaugeProgressStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeProgressStyle.swift; sourceTree = "<group>"; };
 		741B0141285A1C560090B764 /* MyCountDown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCountDown.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +143,8 @@
 				3F2C2992286BAD040020494C /* LargeButtonView.swift */,
 				3F2C298D286AFCB60020494C /* BadgeView.swift */,
 				3F2C2987286877C20020494C /* TagView.swift */,
+				3F543C3C287DB60E008E13A1 /* MailView.swift */,
+				3F543C3E287E0D5A008E13A1 /* ActivityView.swift */,
 			);
 			path = CountDown;
 			sourceTree = "<group>";
@@ -303,6 +309,8 @@
 				741B0173285A72000090B764 /* DataViewModel.swift in Sources */,
 				3F2C298A2868BF590020494C /* UserDefaults+.swift in Sources */,
 				3FDF1955287627E800CB61CB /* GaugeProgressStyle.swift in Sources */,
+				3F543C3D287DB60E008E13A1 /* MailView.swift in Sources */,
+				3F543C3F287E0D5A008E13A1 /* ActivityView.swift in Sources */,
 				741B0147285A1C560090B764 /* ContentView.swift in Sources */,
 				3F2C2986286876D90020494C /* PreventableScrollView.swift in Sources */,
 				741B0171285A67BB0090B764 /* ListCard.swift in Sources */,
